@@ -2,11 +2,11 @@
 
 rm -rf ~/ascend/log/*
 # =======================================================================
-MODEL_PATH="/home/weight/Qwen3.6-27B"
-MODEL_NAME="qwen36"
-export ASCEND_RT_VISIBLE_DEVICES=4,5,6,7
+MODEL_PATH="/home/weight/Qwen3-8B"
+MODEL_NAME="qwen3-8"
+export ASCEND_RT_VISIBLE_DEVICES=14
 # =======================================================================
-export NODE_IP=90.90.97.28  # node ip
+export NODE_IP=90.90.97.27  # node ip
 export NETWORK_CARD_NAME="enp194s0f0"  # network card name
 # =======================================================================
 export HCCL_IF_IP="${NODE_IP}"
@@ -50,7 +50,7 @@ vllm serve $MODEL_PATH \
   --max-model-len 32768  \
   --max-num-batched-tokens 2048  \
   --trust-remote-code \
-  --tensor-parallel-size 4 \
+  --tensor-parallel-size 1 \
   --gpu-memory-utilization 0.9  \
   --no-enable-prefix-caching \
   --compilation-config '{"cudagraph_mode":"FULL_DECODE_ONLY"}' \
@@ -64,11 +64,11 @@ vllm serve $MODEL_PATH \
         "kv_connector_extra_config": {
             "prefill": {
                 "dp_size": 1,
-                "tp_size": 4
+                "tp_size": 1
             },
             "decode": {
                 "dp_size": 1,
-                "tp_size": 4
+                "tp_size": 1
             }
         }
     }'
