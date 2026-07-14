@@ -1,7 +1,14 @@
+#!/bin/bash
+
+HOST="90.90.97.27"
+PORT_PROXY="8080"
+PORT_P="13900"
+PORT_D="13901"
+
 python load_balance_proxy_server_example.py \
-    --host 90.90.97.28 \
-    --port 8080 \
-    --prefiller-hosts 90.90.97.28 \
-    --prefiller-port 13900 \
-    --decoder-hosts 90.90.97.28 \
-    --decoder-ports 13901
+    --host ${HOST} \
+    --port ${PORT_PROXY} \
+    --prefiller-hosts ${HOST} \
+    --prefiller-port ${PORT_P} \
+    --decoder-hosts ${HOST} \
+    --decoder-ports ${PORT_D}
