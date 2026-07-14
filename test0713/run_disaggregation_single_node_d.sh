@@ -4,7 +4,7 @@ rm -rf ~/ascend/log/*
 # =======================================================================
 MODEL_PATH="/home/weight/Qwen3-8B"
 MODEL_NAME="qwen3-8"
-export ASCEND_RT_VISIBLE_DEVICES=14
+export ASCEND_RT_VISIBLE_DEVICES=15
 # =======================================================================
 export NODE_IP=90.90.97.27  # node ip
 export NETWORK_CARD_NAME="enp194s0f0"  # network card name
@@ -17,6 +17,7 @@ export HCCL_EXEC_TIMEOUT=600
 export HCCL_CONNECT_TIMEOUT=360
 export OMP_PROC_BIND=false
 export OMP_NUM_THREADS=10
+# export VLLM_USE_V2_MODEL_RUNNER=1
 
 # =======================================================================
 
@@ -58,7 +59,7 @@ vllm serve $MODEL_PATH \
   --async-scheduling \
   --kv-transfer-config \
   '{
-        "kv_connector": "MooncakeConnectorV1",
+        "kv_connector": "MooncakeConnector",
         "kv_role": "kv_consumer",
         "kv_port": "30901",
         "kv_connector_extra_config": {

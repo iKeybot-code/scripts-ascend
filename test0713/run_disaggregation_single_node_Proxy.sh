@@ -11,4 +11,4 @@ python load_balance_proxy_server_example.py \
     --prefiller-hosts ${HOST} \
     --prefiller-port ${PORT_P} \
     --decoder-hosts ${HOST} \
-    --decoder-ports 1${PORT_D}
+    --decoder-ports ${PORT_D}
