@@ -17,6 +17,7 @@ export HCCL_EXEC_TIMEOUT=600
 export HCCL_CONNECT_TIMEOUT=360
 export OMP_PROC_BIND=false
 export OMP_NUM_THREADS=10
+# export VLLM_USE_V2_MODEL_RUNNER=1
 
 # =======================================================================
 
