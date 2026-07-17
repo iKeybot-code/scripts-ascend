@@ -1,10 +1,11 @@
 #!/bin/bash
 
 rm -rf ~/ascend/log/*
+LOG_DIR="/workspace/logs"
 # =======================================================================
 MODEL_PATH="/home/weight/Qwen3-8B"
-MODEL_NAME="qwen3-8"
-export ASCEND_RT_VISIBLE_DEVICES=14
+MODEL_NAME="qwen3"
+export ASCEND_RT_VISIBLE_DEVICES=15
 # =======================================================================
 export NODE_IP=90.90.97.27  # node ip
 export NETWORK_CARD_NAME="enp194s0f0"  # network card name
@@ -18,7 +19,6 @@ export HCCL_CONNECT_TIMEOUT=360
 export OMP_PROC_BIND=false
 export OMP_NUM_THREADS=10
 # export VLLM_USE_V2_MODEL_RUNNER=1
-
 # =======================================================================
 
 export HCCL_BUFFSIZE=1024
@@ -72,7 +72,8 @@ vllm serve $MODEL_PATH \
                 "tp_size": 1
             }
         }
-    }'
+    }' \
+    2>&1 | tee ${LOG_DIR}/d_`date "+%m%d%H%M%S"`.log
 
 # =======================================================================
 #  --api-server-count 1 \
