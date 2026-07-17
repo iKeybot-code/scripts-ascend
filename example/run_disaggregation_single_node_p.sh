@@ -1,10 +1,11 @@
 #!/bin/bash
 
 rm -rf ~/ascend/log/*
+LOG_DIR="/workspace/logs"
 # =======================================================================
 MODEL_PATH="/home/weight/Qwen3-8B"
-MODEL_NAME="qwen3-8"
-export ASCEND_RT_VISIBLE_DEVICES=15
+MODEL_NAME="qwen3"
+export ASCEND_RT_VISIBLE_DEVICES=14
 # =======================================================================
 export NODE_IP=90.90.97.27  # node ip
 export NETWORK_CARD_NAME="enp194s0f0"  # network card name
@@ -71,6 +72,7 @@ vllm serve $MODEL_PATH \
             }
         }
     }' \
+    2>&1 | tee ${LOG_DIR}/p_`date "+%m%d%H%M%S"`.log
 
 # =======================================================================
 #  --api-server-count 1 \
