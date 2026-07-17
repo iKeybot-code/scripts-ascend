@@ -1,7 +1,8 @@
 #!/bin/bash
 
 rm -rf ~/ascend/log/*
-LOG_DIR="/workspace/logs"
+LOG_DIR="./logs"
+mkdir -p ${LOG_DIR}
 # =======================================================================
 MODEL_PATH="/home/weight/Qwen3-8B"
 MODEL_NAME="qwen3"
@@ -42,7 +43,7 @@ export MC_LOG_LEVEL=ERROR
 # export VLLM_MOONCAKE_ABORT_REQUEST_TIMEOUT=300000
 # =======================================================================
 
-vllm serve $MODEL_PATH \
+PYTHONUNBUFFERED=1 vllm serve $MODEL_PATH \
   --served-model-name $MODEL_NAME \
   --host 0.0.0.0 \
   --port 13900 \
