@@ -5,15 +5,29 @@
 # =============================================================================
 
 _THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-_EXAMPLE_DIR="$(cd "${_THIS_DIR}/.." && pwd)"
 
-# shellcheck disable=SC1091
-source "${_EXAMPLE_DIR}/common/config_helpers.sh"
-bootstrap_common_dir "${_EXAMPLE_DIR}"
-if [[ -f "${COMMON_DIR}/config_helpers.sh" ]]; then
-    # shellcheck disable=SC1091
-    source "${COMMON_DIR}/config_helpers.sh"
+# Locate common/ (priority):
+#   1) COMMON_DIR
+#   2) SHARED_COMMON_DIR (default shared mount)
+#   3) <scenario>/../common
+#   4) <scenario>/common
+export SHARED_COMMON_DIR="${SHARED_COMMON_DIR:-/mnt/a800_share/l00848175/scripts-ascend/example/common}"
+if [[ -z "${COMMON_DIR:-}" || ! -f "${COMMON_DIR}/config_helpers.sh" ]]; then
+    if [[ -f "${SHARED_COMMON_DIR}/config_helpers.sh" ]]; then
+        export COMMON_DIR="$(cd "${SHARED_COMMON_DIR}" && pwd)"
+    elif [[ -f "${_THIS_DIR}/../common/config_helpers.sh" ]]; then
+        export COMMON_DIR="$(cd "${_THIS_DIR}/../common" && pwd)"
+    elif [[ -f "${_THIS_DIR}/common/config_helpers.sh" ]]; then
+        export COMMON_DIR="$(cd "${_THIS_DIR}/common" && pwd)"
+    else
+        echo "[configs] cannot locate common/. Set COMMON_DIR or SHARED_COMMON_DIR." >&2
+        return 1 2>/dev/null || exit 1
+    fi
+else
+    export COMMON_DIR="$(cd "${COMMON_DIR}" && pwd)"
 fi
+# shellcheck disable=SC1091
+source "${COMMON_DIR}/config_helpers.sh"
 
 # ----- Feature switches -----
 export ENABLE_KV_POOL=1

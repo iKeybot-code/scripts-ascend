@@ -1,16 +1,6 @@
 #!/bin/bash
 # Shared helpers used by scenario configs.sh files.
 
-bootstrap_common_dir() {
-    local example_dir="$1"
-    export SHARED_COMMON_DIR="${SHARED_COMMON_DIR:-/mnt/a800_share/l00848175/scripts-ascend/example/common}"
-    if [[ -d "${SHARED_COMMON_DIR}" ]]; then
-        export COMMON_DIR="${SHARED_COMMON_DIR}"
-    else
-        export COMMON_DIR="${example_dir}/common"
-    fi
-}
-
 resolve_node_meta() {
     local role="$1"
     local node_index="${2:-0}"
