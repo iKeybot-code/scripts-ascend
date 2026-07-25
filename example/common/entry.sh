@@ -5,12 +5,12 @@
 #   bash entry.sh <configs.sh> <action> [args...]
 #
 # Actions:
-#   master | proxy | prefill | decode | test
+#   mooncake_master | proxy | prefill | decode | test
 
 set -euo pipefail
 
 if [[ $# -lt 2 ]]; then
-    echo "Usage: $0 <configs.sh> <master|proxy|prefill|decode|test> [args...]" >&2
+    echo "Usage: $0 <configs.sh> <mooncake_master|proxy|prefill|decode|test> [args...]" >&2
     exit 1
 fi
 
@@ -37,7 +37,7 @@ fi
 source "${COMMON_BOOT}/load_configs.sh"
 
 case "${ACTION}" in
-    master|mooncake_master)
+    mooncake_master)
         exec bash "${COMMON_DIR}/start_mooncake_master.sh" "$@"
         ;;
     proxy)
@@ -54,7 +54,7 @@ case "${ACTION}" in
         ;;
     *)
         echo "[entry] unknown action: ${ACTION}" >&2
-        echo "  expected: master|proxy|prefill|decode|test" >&2
+        echo "  expected: mooncake_master|proxy|prefill|decode|test" >&2
         exit 1
         ;;
 esac

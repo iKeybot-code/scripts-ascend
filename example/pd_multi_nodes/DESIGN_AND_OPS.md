@@ -79,7 +79,7 @@ export KV_LOAD_FAILURE_POLICY=recompute
 2. `start_prefill.sh <node_index>`  
 3. `start_decode.sh <node_index>`  
 4. `start_proxy.sh`  
-5. `test_curl.sh 1`
+5. `test_curl.sh`（AISBench GSM8K 前 10 条精度）
 
 ---
 
@@ -101,7 +101,10 @@ scripts-ascend/example/
 │   ├── start_prefill.sh
 │   ├── start_decode.sh
 │   ├── start_proxy.sh
-│   ├── test_curl.sh
+│   ├── test_curl.sh                                # AISBench GSM8K top10 精度烟测
+│   ├── aisbench_configs/
+│   │   ├── datasets/gsm8k/pd_gsm8k_acc_top10.py
+│   │   └── models/vllm_api/pd_gsm8k_acc_top10.py
 │   ├── load_balance_proxy_server_example.py
 │   └── load_balance_proxy_layerwise_server_example.py
 │
@@ -204,7 +207,7 @@ cd /mnt/a800_share/l00848175/scripts-ascend/example/pd_single_node
 bash start_prefill.sh 0      # 终端1
 bash start_decode.sh 0       # 终端2
 bash start_proxy.sh          # 终端3
-bash test_curl.sh 1
+bash test_curl.sh            # AISBench GSM8K 前10条精度
 ```
 
 ### 4.3 场景 B：单节点 PD + KV 池化
@@ -217,7 +220,7 @@ bash start_mooncake_master.sh   # 终端1
 bash start_prefill.sh 0         # 终端2
 bash start_decode.sh 0          # 终端3
 bash start_proxy.sh             # 终端4
-bash test_curl.sh 1
+bash test_curl.sh               # AISBench GSM8K 前10条精度
 ```
 
 ### 4.4 场景 C：多节点 PD + KV 池化
@@ -237,20 +240,67 @@ bash start_decode.sh <j>
 
 # Proxy 节点
 bash start_proxy.sh
-bash test_curl.sh 1
+bash test_curl.sh               # AISBench GSM8K 前10条精度
 ```
 
 也可用统一入口：
 
 ```bash
-bash run.sh master
+bash run.sh mooncake_master
 bash run.sh prefill 0
 bash run.sh decode 0
 bash run.sh proxy
-bash run.sh test 1
+bash run.sh test
 ```
 
-### 4.5 切换 connector / 开关池化示例
+### 4.5 精度验证（AISBench GSM8K top10）
+
+`test_curl.sh` 已改为调用 AISBench，对 Proxy 地址跑 **GSM8K 前 10 条**精度评测（对齐 aisbench smoke `accuracy_gsm8k` 的 `test_range='[0:10]'`）。
+
+**前置条件：**
+
+1. 容器内已安装 `ais_bench`，且命令可用：`ais_bench --help`
+2. GSM8K 数据集已放到 aisbench 约定路径（相对源码根）：
+
+```bash
+# 数据集默认路径
+<aisbench_root>/ais_bench/datasets/gsm8k
+```
+
+3. PD 服务与 Proxy 已拉起，`configs.sh` 中 `PROXY_HOST` / `PROXY_PORT` / `MODEL_NAME` 正确
+
+**执行：**
+
+```bash
+bash test_curl.sh
+# 或
+bash run.sh test
+```
+
+**脚本行为：**
+
+1. 将 `common/aisbench_configs/` 下 case 配置安装到当前 `ais_bench` 包的 `configs/`  
+2. 写入运行时字段：`host_ip/host_port/model/path/max_out_len/batch_size/test_range`  
+3. 执行：
+
+```bash
+ais_bench --models pd_gsm8k_acc_top10 --datasets pd_gsm8k_acc_top10 --work-dir <AISBENCH_WORK_DIR>
+```
+
+4. 在终端打印 summary，并尽量解析 accuracy 指标  
+5. 完整日志：`${LOG_DIR}/aisbench_gsm8k/aisbench_pd_gsm8k_acc_top10_*.log`
+
+**可在 `configs.sh` 调整的参数：**
+
+```bash
+export AISBENCH_CASE_NAME=pd_gsm8k_acc_top10
+export AISBENCH_WORK_DIR=${LOG_DIR}/aisbench_gsm8k
+export AISBENCH_MAX_OUT_LEN=512
+export AISBENCH_BATCH_SIZE=1
+export GSM8K_TEST_RANGE='[0:10]'   # 可改为 [0:50] 等
+```
+
+### 4.6 切换 connector / 开关池化示例
 
 **在 `pd_single_node` 临时打开 KV 池化：**
 
@@ -282,6 +332,7 @@ export PD_KV_CONNECTOR=MooncakeLayerwiseConnector
 | `ENABLE_KV_POOL=0` 的单 connector | `pd_disaggregation_mooncake_*` |
 | Proxy 自动选择 | `disaggregated_prefill_v1/load_balance_proxy_*.py` |
 | `mooncake_master` | kv_pool / pd_colocated 文档 |
+| `test_curl.sh`（GSM8K top10） | `aisbench/.../accuracy_gsm8k`（`test_range='[0:10]'`） |
 
 ---
 
@@ -293,6 +344,7 @@ export PD_KV_CONNECTOR=MooncakeLayerwiseConnector
 4. **共享目录优先**：确保容器内实际执行的是共享盘上的 `common`，避免节点本地旧副本。
 5. **池化关闭时**：不必启动 `mooncake_master`；脚本会提示并跳过。
 6. **硬件变量**：A2/A3 相关导出项可在 `env_common.sh` 中按需打开。
+7. **AISBench**：需预先安装并准备 GSM8K 数据集；`test_curl.sh` 会向当前 Python 环境的 `ais_bench` 配置目录写入临时 case 文件。
 
 ---
 
@@ -303,4 +355,5 @@ export PD_KV_CONNECTOR=MooncakeLayerwiseConnector
 - [ ] 若 `ENABLE_KV_POOL=1`，已先启动 `mooncake_master`
 - [ ] `PD_KV_CONNECTOR` 与 Proxy 实现匹配（Layerwise 自动处理）
 - [ ] 多节点时 `node_index` 与 IP 列表一致
-- [ ] `test_curl.sh 1` 返回正常生成内容
+- [ ] 已安装 `ais_bench` 且 GSM8K 数据集就绪
+- [ ] `test_curl.sh` 完成并输出 GSM8K top10 精度/summary

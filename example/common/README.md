@@ -12,10 +12,12 @@
 
 | 文件 | 作用 |
 |------|------|
-| `entry.sh` | 统一入口：`master/proxy/prefill/decode/test` |
+| `entry.sh` | 统一入口：`mooncake_master/proxy/prefill/decode/test` |
 | `launch_online_dp.py` / `run_dp_template.sh` | 对齐官方 external online DP |
 | `kv_transfer_config.sh` | 按 `ENABLE_KV_POOL` / `PD_KV_CONNECTOR` 生成 KV 配置 |
-| `start_*.sh` / `test_curl.sh` | 组件启动与验证 |
+| `start_*.sh` | 组件启动 |
+| `test_curl.sh` | AISBench GSM8K 前 10 条精度烟测 |
+| `aisbench_configs/` | GSM8K top10 case 配置模板 |
 | `load_balance_proxy_*.py` | PD Proxy（普通 / layerwise） |
 | `gen_mooncake_json.sh` | 生成 mooncake.json |
 | `env_common.sh` / `config_helpers.sh` | 环境与节点解析 |

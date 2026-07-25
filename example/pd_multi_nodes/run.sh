@@ -1,5 +1,5 @@
 #!/bin/bash
-# Usage: bash run.sh <master|proxy|prefill|decode|test> [args...]
+# Usage: bash run.sh <mooncake_master|proxy|prefill|decode|test> [args...]
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIGS_FILE="${SCRIPT_DIR}/configs.sh"

@@ -92,3 +92,10 @@ export D_MAX_NUM_BATCHED_TOKENS=2048
 export D_GPU_MEMORY_UTILIZATION=0.9
 export D_ASYNC_SCHEDULING=1
 export LOG_DIR="${LOG_DIR:-${_THIS_DIR}/logs}"
+
+# ----- AISBench smoke (test_curl.sh -> GSM8K top10 accuracy) -----
+export AISBENCH_CASE_NAME="${AISBENCH_CASE_NAME:-pd_gsm8k_acc_top10}"
+export AISBENCH_WORK_DIR="${AISBENCH_WORK_DIR:-${LOG_DIR}/aisbench_gsm8k}"
+export AISBENCH_MAX_OUT_LEN="${AISBENCH_MAX_OUT_LEN:-512}"
+export AISBENCH_BATCH_SIZE="${AISBENCH_BATCH_SIZE:-1}"
+export GSM8K_TEST_RANGE="${GSM8K_TEST_RANGE:-[0:10]}"
