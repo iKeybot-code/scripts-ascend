@@ -43,6 +43,7 @@ fi
 
 set_network_env "${LOCAL_IP}" "${NIC_NAME}"
 set_runtime_env
+export GLOO_SOCKET_IFNAME=lo  # Use loopback for intra-node DP gloo communication
 
 # Enable Model Runner V2 (MRV2)
 export VLLM_USE_V2_MODEL_RUNNER="${VLLM_USE_V2_MODEL_RUNNER:-1}"
@@ -85,12 +86,6 @@ elif [[ "${ROLE}" == "decode" ]]; then
         EXTRA_ARGS+=(--enable-prefix-caching)
     fi
     if [[ "${D_ENFORCE_EAGER:-1}" == "1" ]]; then
-        EXTRA_ARGS+=(--enforce-eager)
-    fi
-    if [[ "${D_ENFORCE_EAGER:-0}" == "1" ]]; then
-        EXTRA_ARGS+=(--enforce-eager)
-    fi
-    if [[ "${D_ENFORCE_EAGER:-0}" == "1" ]]; then
         EXTRA_ARGS+=(--enforce-eager)
     fi
     if [[ "${D_ASYNC_SCHEDULING}" == "1" ]]; then
