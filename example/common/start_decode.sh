@@ -32,7 +32,11 @@ set_network_env "${CUR_IP}" "${CUR_NIC}"
 set_runtime_env
 
 DP_RANK_START=$((NODE_INDEX * D_DP_SIZE_LOCAL))
-VISIBLE_LIST=$(IFS='; echo "${D_VISIBLE_DEVICES_LIST[*]}")
+# Properly join array with semicolons
+_OLD_IFS="$IFS"
+IFS=";"
+VISIBLE_LIST="${D_VISIBLE_DEVICES_LIST[*]}"
+IFS="$_OLD_IFS"
 
 echo "[start_decode] node_index=${NODE_INDEX} ip=${CUR_IP} nic=${CUR_NIC}"
 echo "[start_decode] connector=${PD_KV_CONNECTOR:-MooncakeConnectorV1} enable_kv_pool=${ENABLE_KV_POOL:-0}"

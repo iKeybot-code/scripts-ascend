@@ -44,6 +44,9 @@ fi
 set_network_env "${LOCAL_IP}" "${NIC_NAME}"
 set_runtime_env
 
+# Enable Model Runner V2 (MRV2)
+export VLLM_USE_V2_MODEL_RUNNER="${VLLM_USE_V2_MODEL_RUNNER:-1}"
+
 export ASCEND_RT_VISIBLE_DEVICES="${VISIBLE_DEVICES}"
 if is_kv_pool_enabled; then
     export MOONCAKE_CONFIG_PATH
@@ -52,13 +55,19 @@ fi
 mkdir -p "${LOG_DIR}"
 rm -rf "${HOME}/ascend/log/"* 2>/dev/null || true
 
+# Prefix caching: can be controlled via ENABLE_PREFIX_CACHE in configs.sh (default: 1)
+ENABLE_PREFIX_CACHE="${ENABLE_PREFIX_CACHE:-1}"
+
 if [[ "${ROLE}" == "prefill" ]]; then
     KV_ROLE="kv_producer"
     MAX_NUM_SEQS="${P_MAX_NUM_SEQS}"
     MAX_MODEL_LEN="${P_MAX_MODEL_LEN}"
     MAX_NUM_BATCHED_TOKENS="${P_MAX_NUM_BATCHED_TOKENS}"
     GPU_MEM_UTIL="${P_GPU_MEMORY_UTILIZATION}"
-    EXTRA_ARGS=(--no-enable-prefix-caching --additional-config '{"enable_cpu_binding":true}')
+    EXTRA_ARGS=(--additional-config '{"enable_cpu_binding":true}')
+    if [[ "${ENABLE_PREFIX_CACHE}" == "1" ]]; then
+        EXTRA_ARGS+=(--enable-prefix-caching)
+    fi
     if [[ "${P_ENFORCE_EAGER}" == "1" ]]; then
         EXTRA_ARGS+=(--enforce-eager)
     fi
@@ -69,10 +78,21 @@ elif [[ "${ROLE}" == "decode" ]]; then
     MAX_NUM_BATCHED_TOKENS="${D_MAX_NUM_BATCHED_TOKENS}"
     GPU_MEM_UTIL="${D_GPU_MEMORY_UTILIZATION}"
     EXTRA_ARGS=(
-        --no-enable-prefix-caching
-        --compilation-config '{"cudagraph_mode":"FULL_DECODE_ONLY"}'
+        --compilation-config '{"cudagraph_mode":"NONE"}'
         --additional-config '{"recompute_scheduler_enable":true,"enable_cpu_binding":true}'
     )
+    if [[ "${ENABLE_PREFIX_CACHE}" == "1" ]]; then
+        EXTRA_ARGS+=(--enable-prefix-caching)
+    fi
+    if [[ "${D_ENFORCE_EAGER:-1}" == "1" ]]; then
+        EXTRA_ARGS+=(--enforce-eager)
+    fi
+    if [[ "${D_ENFORCE_EAGER:-0}" == "1" ]]; then
+        EXTRA_ARGS+=(--enforce-eager)
+    fi
+    if [[ "${D_ENFORCE_EAGER:-0}" == "1" ]]; then
+        EXTRA_ARGS+=(--enforce-eager)
+    fi
     if [[ "${D_ASYNC_SCHEDULING}" == "1" ]]; then
         EXTRA_ARGS+=(--async-scheduling)
     fi
@@ -86,6 +106,7 @@ KV_TRANSFER_CONFIG="$(build_kv_transfer_config "${KV_ROLE}" "${KV_PORT}")"
 LOG_FILE="${LOG_DIR}/${ROLE}_rank${DP_RANK}_$(date '+%m%d%H%M%S').log"
 echo "[run_dp_template] role=${ROLE} rank=${DP_RANK} port=${ENGINE_PORT} kv_port=${KV_PORT} ip=${LOCAL_IP}"
 echo "[run_dp_template] pd_connector=${PD_KV_CONNECTOR:-MooncakeConnectorV1} enable_kv_pool=${ENABLE_KV_POOL:-0}"
+echo "[run_dp_template] mrv2=${VLLM_USE_V2_MODEL_RUNNER} prefix_cache=${ENABLE_PREFIX_CACHE}"
 echo "[run_dp_template] log=${LOG_FILE}"
 
 PYTHONUNBUFFERED=1 vllm serve "${MODEL_PATH}" \
