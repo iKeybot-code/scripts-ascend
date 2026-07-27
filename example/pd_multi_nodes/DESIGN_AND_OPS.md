@@ -51,7 +51,7 @@ export KV_LOAD_FAILURE_POLICY=recompute
 |----------|----------------|----------|
 | `pd_single_node` | `0` | 单机同 IP，P/D 各 1 rank |
 | `pd_and_kvpool_single_node` | `1` | 单机同 IP，P/D 各 1 rank |
-| `pd_multi_nodes` | `1` | 多机 IP 列表，可配多 rank |
+| `pd_multi_nodes` | `1` | 默认四机 2P1D：P=`DP2 TP8`，D=`DP32 TP1`（两机拼一组） |
 
 三个场景共享同一套 `common` 启动逻辑，仅 `configs.sh` 不同。
 
@@ -76,14 +76,31 @@ export KV_LOAD_FAILURE_POLICY=recompute
               (按开关拼 kv-transfer-config)
 ```
 
-启动顺序（统一入口，最小化参数）：
+### 1.5 共享目录同脚本多机运行（重要）
+
+脚本放在共享盘，**每台机器执行同一份 `configs.sh` / `run.sh`，不要按机器复制多份脚本**。
+
+机器差异只通过下面两种方式区分：
+
+1. **`configs.sh` 中与机器 IP 下标对齐的参数列表**（主方式）  
+   - `PREFILL_IPS[i]` / `PREFILL_NICS[i]`  
+   - `DECODE_IPS[j]` / `DECODE_NICS[j]`  
+   - 可选：`P_NODE_VISIBLE_DEVICES[i]`、`P_NODE_HTTP_PORT[i]`、`P_NODE_KV_PORT_BASE[i]`（Decode 同理）
+2. **启动传参 / 环境变量**（辅助）  
+   - `bash run.sh prefill`：按本机 IP 自动匹配列表下标  
+   - `bash run.sh prefill 1` 或 `--node-index 1`  
+   - `bash run.sh prefill --node-ip 90.90.97.28` 或 `NODE_IP=...`
+
+日志默认写到共享盘下的**分机目录**：`${LOG_DIR_BASE}/<role><idx>_<ip>/`，避免多机互相覆盖。
 
 ```bash
-bash run.sh mooncake_master      # 可选，仅 KV 池化需要
-bash run.sh prefill [node_index] # node_index 默认 0
-bash run.sh decode  [node_index]
-bash run.sh proxy
-bash run.sh test                 # AISBench GSM8K 前 10 条精度
+# 所有机器都 cd 到同一共享路径
+cd /mnt/a800_share/l00848175/scripts-ascend/example/pd_multi_nodes
+bash run.sh topology
+
+# P0 / P1 / D0 / D1 各自执行对应 role（命令可完全相同）
+bash run.sh prefill    # 在 Prefill 机器上
+bash run.sh decode     # 在 Decode 机器上
 ```
 
 ---
@@ -228,24 +245,54 @@ bash run.sh proxy             # 终端4
 bash run.sh test              # AISBench GSM8K 前10条精度
 ```
 
-### 4.4 场景 C：多节点 PD + KV 池化
+### 4.4 场景 C：四机 2P1D（共享目录同脚本）
+
+`pd_multi_nodes/configs.sh` 默认拓扑：
+
+| 角色 | 机器数 | 并行 | 每机 local DP | 卡数/机（自动分配） |
+|------|--------|------|---------------|---------------------|
+| Prefill | 2 | DP2 TP8 | 1 | 8（`0-7`） |
+| Decode | 2 | DP32 TP1 | 16 | 16（`0-15`，两机共一组 DP） |
+
+**先只改一份共享 `configs.sh`（IP 对齐列表）：**
+
+```bash
+PREFILL_IPS=(P0_IP P1_IP)
+PREFILL_NICS=(nic0 nic1)
+DECODE_IPS=(D0_IP D1_IP)
+DECODE_NICS=(nic0 nic1)
+# 可选按机差异（下标与 IPS 对齐）
+# P_NODE_VISIBLE_DEVICES=("0,1,2,3,4,5,6,7" "0,1,2,3,4,5,6,7")
+# P_NODE_HTTP_PORT=(7100 7100)
+# P_NODE_KV_PORT_BASE=(36000 36100)
+```
+
+**各机进入同一共享目录执行（命令可相同，靠本机 IP 匹配）：**
 
 ```bash
 cd /mnt/a800_share/l00848175/scripts-ascend/example/pd_multi_nodes
-# 编辑 configs.sh 中的 PREFILL_IPS/DECODE_IPS/NICS 等
+bash run.sh topology
 
-# Master 节点
+# P0
 bash run.sh mooncake_master
-
-# Prefill 节点 i
-bash run.sh prefill <i>
-
-# Decode 节点 j
-bash run.sh decode <j>
-
-# Proxy 节点
+bash run.sh prefill
 bash run.sh proxy
+
+# P1
+bash run.sh prefill
+
+# D0 / D1
+bash run.sh decode
+
 bash run.sh test
+```
+
+自动识别失败时显式指定：
+
+```bash
+bash run.sh prefill --node-ip 90.90.97.28
+bash run.sh decode --node-index 1
+NODE_IP=90.90.97.30 bash run.sh decode
 ```
 
 ### 4.5 精度验证（AISBench GSM8K top10）

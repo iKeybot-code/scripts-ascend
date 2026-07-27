@@ -47,6 +47,12 @@ export DECODE_IPS=(90.90.97.27)
 export DECODE_NICS=(enp194s0f0)
 export LOCAL_IPS=("${PREFILL_IPS[@]}" "${DECODE_IPS[@]}")
 export NIC_NAMES=("${PREFILL_NICS[@]}" "${DECODE_NICS[@]}")
+export P_NODE_VISIBLE_DEVICES=()
+export D_NODE_VISIBLE_DEVICES=()
+export P_NODE_HTTP_PORT=()
+export D_NODE_HTTP_PORT=()
+export P_NODE_KV_PORT_BASE=()
+export D_NODE_KV_PORT_BASE=()
 
 # ----- Parallelism -----
 export P_DP_SIZE=1

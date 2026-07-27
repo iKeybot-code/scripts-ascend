@@ -6,19 +6,20 @@
 /mnt/a800_share/l00848175/scripts-ascend/example/common/
 ```
 
-请将本目录同步到上述共享路径。各场景目录只保留 `configs.sh` + `run.sh`，通过：
+请将本目录同步到上述共享路径。各场景目录只保留 `configs.sh` + `run.sh`。
+
+**共享目录多机**：所有节点执行同一份脚本；用 `configs.sh` 的 IP 对齐列表区分机器，或传 `--node-ip` / `--node-index`。
 
 ```bash
-bash run.sh <mooncake_master|prefill|decode|proxy|test> [args...]
+bash run.sh <mooncake_master|prefill|decode|proxy|test|topology> [args...]
 ```
-
-调用本目录实现。
 
 ## 主要文件
 
 | 文件 | 作用 |
 |------|------|
-| `entry.sh` | 统一 action 分发：`mooncake_master/proxy/prefill/decode/test` |
+| `entry.sh` | 统一 action 分发：`mooncake_master/proxy/prefill/decode/test/topology` |
+| `config_helpers.sh` | 节点解析 / IP 自动识别 / 拓扑校验与打印 |
 | `launch_online_dp.py` / `run_dp_template.sh` | 对齐官方 external online DP |
 | `kv_transfer_config.sh` | 按 `ENABLE_KV_POOL` / `PD_KV_CONNECTOR` 生成 KV 配置 |
 | `start_*.sh` | 组件实现（由 `entry.sh` 调用，勿在场景目录重复） |

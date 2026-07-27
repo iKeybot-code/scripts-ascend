@@ -5,12 +5,12 @@
 #   bash entry.sh <configs.sh> <action> [args...]
 #
 # Actions:
-#   mooncake_master | proxy | prefill | decode | test
+#   mooncake_master | proxy | prefill | decode | test | topology
 
 set -euo pipefail
 
 if [[ $# -lt 2 ]]; then
-    echo "Usage: $0 <configs.sh> <mooncake_master|proxy|prefill|decode|test> [args...]" >&2
+    echo "Usage: $0 <configs.sh> <mooncake_master|proxy|prefill|decode|test|topology> [args...]" >&2
     exit 1
 fi
 
@@ -52,9 +52,13 @@ case "${ACTION}" in
     test|curl)
         exec bash "${COMMON_DIR}/test_curl.sh" "$@"
         ;;
+    topology|topo|plan)
+        print_pd_topology
+        exit $?
+        ;;
     *)
         echo "[entry] unknown action: ${ACTION}" >&2
-        echo "  expected: mooncake_master|proxy|prefill|decode|test" >&2
+        echo "  expected: mooncake_master|proxy|prefill|decode|test|topology" >&2
         exit 1
         ;;
 esac

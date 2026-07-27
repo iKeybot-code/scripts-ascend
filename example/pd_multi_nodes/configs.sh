@@ -1,16 +1,23 @@
 #!/bin/bash
 # =============================================================================
-# PD multi-node sample (KV pool enabled by default).
-# Edit THIS FILE for IPs / NICs / ports / model / connector / pool.
+# PD multi-node sample: 4-machine 2P1D (shared-directory same script)
+#
+# Same configs.sh + run.sh is executed on every machine from the shared mount.
+# Machine differences MUST come from:
+#   A) IP-aligned parameter lists below (index i <-> machine i)
+#   B) CLI/env selectors:
+#        bash run.sh prefill|decode                 # auto by local IP
+#        bash run.sh prefill 1                      # explicit index
+#        bash run.sh prefill --node-ip 90.90.97.28  # explicit IP
+#        NODE_IP=90.90.97.28 bash run.sh prefill
+#
+# Topology:
+#   Prefill x2 : global DP=2, TP=8, each node local_DP=1
+#   Decode  x2 : global DP=32, TP=1, each node local_DP=16 (ONE DP group)
 # =============================================================================
 
 _THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Locate common/ (priority):
-#   1) COMMON_DIR
-#   2) SHARED_COMMON_DIR (default shared mount)
-#   3) <scenario>/../common
-#   4) <scenario>/common
 export SHARED_COMMON_DIR="${SHARED_COMMON_DIR:-/mnt/a800_share/l00848175/scripts-ascend/example/common}"
 if [[ -z "${COMMON_DIR:-}" || ! -f "${COMMON_DIR}/config_helpers.sh" ]]; then
     if [[ -f "${SHARED_COMMON_DIR}/config_helpers.sh" ]]; then
@@ -40,33 +47,55 @@ export KV_POOL_LOOKUP_RPC_PORT="${KV_POOL_LOOKUP_RPC_PORT:-0}"
 export MODEL_PATH="${MODEL_PATH:-/home/weight/Qwen3-8B}"
 export MODEL_NAME="${MODEL_NAME:-qwen3}"
 
-# ----- Cluster topology (index-aligned) -----
+# =============================================================================
+# Machine inventory (INDEX-ALIGNED). Edit these lists for your cluster.
+# Index i always means the same physical machine across related arrays.
+# =============================================================================
+
+# Prefill machines: P0, P1
 export PREFILL_IPS=(90.90.97.27 90.90.97.28)
 export PREFILL_NICS=(enp194s0f0 enp194s0f0)
+# Optional per-P-node overrides (length 0 = use global defaults / auto devices)
+# Example (local_DP=1): one device group string per node
+# export P_NODE_VISIBLE_DEVICES=("0,1,2,3,4,5,6,7" "0,1,2,3,4,5,6,7")
+# Example (local_DP=2): semicolon separates local ranks on that node
+# export P_NODE_VISIBLE_DEVICES=("0,1,2,3,4,5,6,7;8,9,10,11,12,13,14,15" "...")
+export P_NODE_VISIBLE_DEVICES=()
+export P_NODE_HTTP_PORT=()          # e.g. (7100 7100)
+export P_NODE_KV_PORT_BASE=()       # e.g. (36000 36100)
+
+# Decode machines: D0, D1 (join one DP group via D_DP_ADDRESS=D0)
 export DECODE_IPS=(90.90.97.29 90.90.97.30)
 export DECODE_NICS=(enp194s0f0 enp194s0f0)
+export D_NODE_VISIBLE_DEVICES=()
+export D_NODE_HTTP_PORT=()
+export D_NODE_KV_PORT_BASE=()
+
 export LOCAL_IPS=("${PREFILL_IPS[@]}" "${DECODE_IPS[@]}")
 export NIC_NAMES=("${PREFILL_NICS[@]}" "${DECODE_NICS[@]}")
 
-# ----- Parallelism -----
+# ----- Parallelism (2P1D) -----
 export P_DP_SIZE=2
-export P_TP_SIZE=1
+export P_TP_SIZE=8
 export P_DP_SIZE_LOCAL=1
-export D_DP_SIZE=2
+export D_DP_SIZE=32
 export D_TP_SIZE=1
-export D_DP_SIZE_LOCAL=1
-export P_VISIBLE_DEVICES_LIST=("14")
-export D_VISIBLE_DEVICES_LIST=("15")
+export D_DP_SIZE_LOCAL=16
 
-# ----- Ports -----
+# Template devices for ALL nodes of a role (used only when P/D_NODE_VISIBLE_DEVICES empty).
+# Length must be 0(auto) or *_DP_SIZE_LOCAL.
+export P_VISIBLE_DEVICES_LIST=()
+export D_VISIBLE_DEVICES_LIST=()
+
+# ----- Ports / DP masters -----
 export PROXY_HOST="${PROXY_HOST:-${PREFILL_IPS[0]}}"
 export PROXY_PORT="${PROXY_PORT:-8080}"
-export P_VLLM_START_PORT=13900
-export D_VLLM_START_PORT=13901
+export P_VLLM_START_PORT=7100
+export D_VLLM_START_PORT=7100
 export P_DP_ADDRESS="${P_DP_ADDRESS:-${PREFILL_IPS[0]}}"
 export D_DP_ADDRESS="${D_DP_ADDRESS:-${DECODE_IPS[0]}}"
 export P_DP_RPC_PORT=12321
-export D_DP_RPC_PORT=12322
+export D_DP_RPC_PORT=12321
 export P_KV_PORT_BASE=36000
 export D_KV_PORT_BASE=37000
 
@@ -80,21 +109,25 @@ export MOONCAKE_KV_LEASE_TTL="${MOONCAKE_KV_LEASE_TTL:-11000}"
 export MOONCAKE_CONFIG_PATH="${MOONCAKE_CONFIG_PATH:-${_THIS_DIR}/mooncake.json}"
 
 # ----- Serve knobs -----
-export P_MAX_NUM_SEQS=4
+export P_MAX_NUM_SEQS=8
 export P_MAX_MODEL_LEN=40000
-export P_MAX_NUM_BATCHED_TOKENS=40000
+export P_MAX_NUM_BATCHED_TOKENS=16384
 export P_GPU_MEMORY_UTILIZATION=0.9
 export P_ENFORCE_EAGER=1
-export D_MAX_NUM_SEQS=16
-export D_MAX_MODEL_LEN=32768
-export D_MAX_NUM_BATCHED_TOKENS=2048
-export D_GPU_MEMORY_UTILIZATION=0.9
+export D_MAX_NUM_SEQS=40
+export D_MAX_MODEL_LEN=40000
+export D_MAX_NUM_BATCHED_TOKENS=256
+export D_GPU_MEMORY_UTILIZATION=0.94
 export D_ASYNC_SCHEDULING=1
-export LOG_DIR="${LOG_DIR:-${_THIS_DIR}/logs}"
+export D_ENFORCE_EAGER="${D_ENFORCE_EAGER:-0}"
 
-# ----- AISBench smoke (test_curl.sh -> GSM8K top10 accuracy) -----
+# Per-machine log root on shared FS (final path: <base>/<role><idx>_<ip>/)
+export LOG_DIR_BASE="${LOG_DIR_BASE:-${_THIS_DIR}/logs}"
+export LOG_DIR="${LOG_DIR:-${LOG_DIR_BASE}}"
+
+# ----- AISBench smoke -----
 export AISBENCH_CASE_NAME="${AISBENCH_CASE_NAME:-pd_gsm8k_acc_top10}"
-export AISBENCH_WORK_DIR="${AISBENCH_WORK_DIR:-${LOG_DIR}/aisbench_gsm8k}"
+export AISBENCH_WORK_DIR="${AISBENCH_WORK_DIR:-${LOG_DIR_BASE}/aisbench_gsm8k}"
 export AISBENCH_MAX_OUT_LEN="${AISBENCH_MAX_OUT_LEN:-512}"
 export AISBENCH_BATCH_SIZE="${AISBENCH_BATCH_SIZE:-1}"
 export GSM8K_TEST_RANGE="${GSM8K_TEST_RANGE:-[0:10]}"

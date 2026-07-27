@@ -55,6 +55,12 @@ export DECODE_IPS=(90.90.97.27)
 export DECODE_NICS=(enp194s0f0)
 export LOCAL_IPS=("${PREFILL_IPS[@]}" "${DECODE_IPS[@]}")
 export NIC_NAMES=("${PREFILL_NICS[@]}" "${DECODE_NICS[@]}")
+export P_NODE_VISIBLE_DEVICES=()
+export D_NODE_VISIBLE_DEVICES=()
+export P_NODE_HTTP_PORT=()
+export D_NODE_HTTP_PORT=()
+export P_NODE_KV_PORT_BASE=()
+export D_NODE_KV_PORT_BASE=()
 
 # ----- Parallelism -----
 export P_DP_SIZE=1
@@ -63,6 +69,7 @@ export P_DP_SIZE_LOCAL=1
 export D_DP_SIZE=1
 export D_TP_SIZE=1
 export D_DP_SIZE_LOCAL=1
+# Length must be 0 (auto) or equal to *_DP_SIZE_LOCAL
 export P_VISIBLE_DEVICES_LIST=("14")
 export D_VISIBLE_DEVICES_LIST=("15")
 

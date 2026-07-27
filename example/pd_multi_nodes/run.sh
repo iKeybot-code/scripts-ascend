@@ -1,14 +1,15 @@
 #!/bin/bash
-# Unified scenario entry (minimal args).
+# Shared-directory multi-machine entry.
+# Same command on every node; machine identity comes from configs.sh IP lists
+# or explicit --node-index / --node-ip.
 #
-# Usage:
+#   bash run.sh topology
 #   bash run.sh mooncake_master
-#   bash run.sh prefill [node_index]
-#   bash run.sh decode  [node_index]
+#   bash run.sh prefill                  # auto by local IP
+#   bash run.sh prefill --node-ip x.x.x.x
+#   bash run.sh decode
 #   bash run.sh proxy
 #   bash run.sh test
-#
-# node_index defaults to 0 when omitted.
 
 set -euo pipefail
 
@@ -19,19 +20,27 @@ if [[ $# -lt 1 ]]; then
     cat <<'EOF' >&2
 Usage: bash run.sh <role> [args...]
 
+Shared-dir multi-machine:
+  - Use the SAME configs.sh/run.sh on every node (shared mount).
+  - Differentiate nodes via IP-aligned lists in configs.sh, and/or:
+      bash run.sh prefill|decode [--node-index N | --node-ip IP]
+      NODE_IP=<ip> bash run.sh prefill|decode
+
 Roles:
+  topology                 Print plan + validate IP-aligned topology
   mooncake_master          Start Mooncake master (KV pool)
-  prefill [node_index]     Start Prefill on node (default node_index=0)
-  decode  [node_index]     Start Decode on node (default node_index=0)
+  prefill [selector]       Start Prefill on this machine
+  decode  [selector]       Start Decode on this machine
   proxy                    Start PD proxy
-  test                     Run AISBench GSM8K top10 accuracy
+  test                     AISBench GSM8K top10
 
 Examples:
-  bash run.sh mooncake_master
-  bash run.sh prefill 0
-  bash run.sh decode 0
+  bash run.sh topology
+  bash run.sh prefill
+  bash run.sh prefill 1
+  bash run.sh prefill --node-ip 90.90.97.28
+  bash run.sh decode
   bash run.sh proxy
-  bash run.sh test
 EOF
     exit 1
 fi
