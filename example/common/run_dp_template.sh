@@ -43,7 +43,16 @@ fi
 
 set_network_env "${LOCAL_IP}" "${NIC_NAME}"
 set_runtime_env
-export GLOO_SOCKET_IFNAME=lo  # Use loopback for intra-node DP gloo communication
+# Use loopback only when all DP ranks are local to this node
+if [[ "${ROLE}" == "prefill" ]]; then
+    if [[ "${P_DP_SIZE:-1}" == "${P_DP_SIZE_LOCAL:-1}" ]]; then
+        export GLOO_SOCKET_IFNAME=lo
+    fi
+elif [[ "${ROLE}" == "decode" ]]; then
+    if [[ "${D_DP_SIZE:-1}" == "${D_DP_SIZE_LOCAL:-1}" ]]; then
+        export GLOO_SOCKET_IFNAME=lo
+    fi
+fi
 
 # Enable Model Runner V2 (MRV2)
 export VLLM_USE_V2_MODEL_RUNNER="${VLLM_USE_V2_MODEL_RUNNER:-1}"
@@ -65,7 +74,7 @@ if [[ "${ROLE}" == "prefill" ]]; then
     MAX_MODEL_LEN="${P_MAX_MODEL_LEN}"
     MAX_NUM_BATCHED_TOKENS="${P_MAX_NUM_BATCHED_TOKENS}"
     GPU_MEM_UTIL="${P_GPU_MEMORY_UTILIZATION}"
-    EXTRA_ARGS=(--additional-config '{"enable_cpu_binding":true}')
+    EXTRA_ARGS=(--additional-config '{"enable_cpu_binding":true,"enable_npugraph_ex":true}')
     if [[ "${ENABLE_PREFIX_CACHE}" == "1" ]]; then
         EXTRA_ARGS+=(--enable-prefix-caching)
     fi
@@ -79,8 +88,8 @@ elif [[ "${ROLE}" == "decode" ]]; then
     MAX_NUM_BATCHED_TOKENS="${D_MAX_NUM_BATCHED_TOKENS}"
     GPU_MEM_UTIL="${D_GPU_MEMORY_UTILIZATION}"
     EXTRA_ARGS=(
-        --compilation-config '{"cudagraph_mode":"NONE"}'
-        --additional-config '{"recompute_scheduler_enable":true,"enable_cpu_binding":true}'
+        --compilation-config '{"cudagraph_mode":"FULL_DECODE_ONLY"}'
+        --additional-config '{"recompute_scheduler_enable":true,"enable_cpu_binding":true,"enable_npugraph_ex":true}'
     )
     if [[ "${ENABLE_PREFIX_CACHE}" == "1" ]]; then
         EXTRA_ARGS+=(--enable-prefix-caching)
