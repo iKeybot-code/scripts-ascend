@@ -45,7 +45,6 @@ export KV_LOAD_FAILURE_POLICY="${KV_LOAD_FAILURE_POLICY:-recompute}"
 export KV_POOL_LOOKUP_RPC_PORT="${KV_POOL_LOOKUP_RPC_PORT:-0}"
 export VLLM_USE_V2_MODEL_RUNNER=1
 
-
 # ----- Model -----
 export MODEL_PATH="${MODEL_PATH:-/mnt/a800_weight/MiniMax-M2.7-w8a8-QuaRot}"
 export MODEL_NAME="${MODEL_NAME:-minimaxm27}"
