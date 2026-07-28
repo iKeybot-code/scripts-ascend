@@ -25,6 +25,7 @@ set_runtime_env() {
     export HCCL_DETERMINISTIC="${HCCL_DETERMINISTIC:-true}"
     export OMP_PROC_BIND="${OMP_PROC_BIND:-false}"
     export OMP_NUM_THREADS="${OMP_NUM_THREADS:-10}"
+    export HCCL_OP_EXPANSION_MODE="AIV"
     export PYTORCH_NPU_ALLOC_CONF="${PYTORCH_NPU_ALLOC_CONF:-expandable_segments:True}"
     export TASK_QUEUE_ENABLE="${TASK_QUEUE_ENABLE:-1}"
     export MC_LOG_LEVEL="${MC_LOG_LEVEL:-ERROR}"

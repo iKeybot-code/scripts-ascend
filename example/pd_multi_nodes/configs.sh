@@ -37,15 +37,18 @@ fi
 source "${COMMON_DIR}/config_helpers.sh"
 
 # ----- Feature switches -----
-export ENABLE_KV_POOL=1
+export ENABLE_KV_POOL=0
+export ENABLE_PREFIX_CACHE=0
 export PD_KV_CONNECTOR="${PD_KV_CONNECTOR:-MooncakeConnectorV1}"
 export KV_POOL_BACKEND="${KV_POOL_BACKEND:-mooncake}"
 export KV_LOAD_FAILURE_POLICY="${KV_LOAD_FAILURE_POLICY:-recompute}"
 export KV_POOL_LOOKUP_RPC_PORT="${KV_POOL_LOOKUP_RPC_PORT:-0}"
+export VLLM_USE_V2_MODEL_RUNNER=1
+
 
 # ----- Model -----
-export MODEL_PATH="${MODEL_PATH:-/home/weight/Qwen3-8B}"
-export MODEL_NAME="${MODEL_NAME:-qwen3}"
+export MODEL_PATH="${MODEL_PATH:-/mnt/a800_weight/MiniMax-M2.7-w8a8-QuaRot}"
+export MODEL_NAME="${MODEL_NAME:-minimaxm27}"
 
 # =============================================================================
 # Machine inventory (INDEX-ALIGNED). Edit these lists for your cluster.
@@ -53,39 +56,39 @@ export MODEL_NAME="${MODEL_NAME:-qwen3}"
 # =============================================================================
 
 # Prefill machines: P0, P1
-export PREFILL_IPS=(90.90.97.27 90.90.97.28)
-export PREFILL_NICS=(enp194s0f0 enp194s0f0)
+export PREFILL_IPS=("90.90.97.37")
+export PREFILL_NICS=(enp194s0f0)
 # Optional per-P-node overrides (length 0 = use global defaults / auto devices)
 # Example (local_DP=1): one device group string per node
 # export P_NODE_VISIBLE_DEVICES=("0,1,2,3,4,5,6,7" "0,1,2,3,4,5,6,7")
 # Example (local_DP=2): semicolon separates local ranks on that node
 # export P_NODE_VISIBLE_DEVICES=("0,1,2,3,4,5,6,7;8,9,10,11,12,13,14,15" "...")
-export P_NODE_VISIBLE_DEVICES=()
+export P_NODE_VISIBLE_DEVICES=("0,1,2,3,4,5,6,7;8,9,10,11,12,13,14,15")
 export P_NODE_HTTP_PORT=()          # e.g. (7100 7100)
 export P_NODE_KV_PORT_BASE=()       # e.g. (36000 36100)
 
 # Decode machines: D0, D1 (join one DP group via D_DP_ADDRESS=D0)
-export DECODE_IPS=(90.90.97.29 90.90.97.30)
-export DECODE_NICS=(enp194s0f0 enp194s0f0)
-export D_NODE_VISIBLE_DEVICES=()
+export DECODE_IPS=("90.90.97.42")
+export DECODE_NICS=(enp194s0f0)
+export D_NODE_VISIBLE_DEVICES=("0,1,2,3,4,5,6,7;8,9,10,11,12,13,14,15")
 export D_NODE_HTTP_PORT=()
 export D_NODE_KV_PORT_BASE=()
 
 export LOCAL_IPS=("${PREFILL_IPS[@]}" "${DECODE_IPS[@]}")
 export NIC_NAMES=("${PREFILL_NICS[@]}" "${DECODE_NICS[@]}")
 
-# ----- Parallelism (2P1D) -----
+# ----- Parallelism (1P1D) -----
 export P_DP_SIZE=2
 export P_TP_SIZE=8
-export P_DP_SIZE_LOCAL=1
-export D_DP_SIZE=32
-export D_TP_SIZE=1
-export D_DP_SIZE_LOCAL=16
+export P_DP_SIZE_LOCAL=2
+export D_DP_SIZE=2
+export D_TP_SIZE=8
+export D_DP_SIZE_LOCAL=2
 
 # Template devices for ALL nodes of a role (used only when P/D_NODE_VISIBLE_DEVICES empty).
 # Length must be 0(auto) or *_DP_SIZE_LOCAL.
-export P_VISIBLE_DEVICES_LIST=()
-export D_VISIBLE_DEVICES_LIST=()
+export P_VISIBLE_DEVICES_LIST=("0,1,2,3,4,5,6,7" "8,9,10,11,12,13,14,15")
+export D_VISIBLE_DEVICES_LIST=("0,1,2,3,4,5,6,7" "8,9,10,11,12,13,14,15")
 
 # ----- Ports / DP masters -----
 export PROXY_HOST="${PROXY_HOST:-${PREFILL_IPS[0]}}"
@@ -109,17 +112,17 @@ export MOONCAKE_KV_LEASE_TTL="${MOONCAKE_KV_LEASE_TTL:-11000}"
 export MOONCAKE_CONFIG_PATH="${MOONCAKE_CONFIG_PATH:-${_THIS_DIR}/mooncake.json}"
 
 # ----- Serve knobs -----
-export P_MAX_NUM_SEQS=8
-export P_MAX_MODEL_LEN=40000
-export P_MAX_NUM_BATCHED_TOKENS=16384
+export P_MAX_NUM_SEQS=128
+export P_MAX_MODEL_LEN=135000 
+export P_MAX_NUM_BATCHED_TOKENS=32768
 export P_GPU_MEMORY_UTILIZATION=0.9
 export P_ENFORCE_EAGER=1
-export D_MAX_NUM_SEQS=40
-export D_MAX_MODEL_LEN=40000
-export D_MAX_NUM_BATCHED_TOKENS=256
-export D_GPU_MEMORY_UTILIZATION=0.94
+export D_MAX_NUM_SEQS=64
+export D_MAX_MODEL_LEN=135000 
+export D_MAX_NUM_BATCHED_TOKENS=32768
+export D_GPU_MEMORY_UTILIZATION=0.92
 export D_ASYNC_SCHEDULING=1
-export D_ENFORCE_EAGER="${D_ENFORCE_EAGER:-0}"
+export D_ENFORCE_EAGER="${D_ENFORCE_EAGER:-1}"
 
 # Per-machine log root on shared FS (final path: <base>/<role><idx>_<ip>/)
 export LOG_DIR_BASE="${LOG_DIR_BASE:-${_THIS_DIR}/logs}"

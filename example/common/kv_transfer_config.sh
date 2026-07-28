@@ -11,11 +11,26 @@
 build_kv_transfer_config() {
     local kv_role="${1:?kv_role required}"
     local kv_port="${2:?kv_port required}"
+    local engine_id="${2:?kv_port required}"
     local pd_connector="${PD_KV_CONNECTOR:-MooncakeConnectorV1}"
     local enable_pool="${ENABLE_KV_POOL:-0}"
     local pool_backend="${KV_POOL_BACKEND:-mooncake}"
     local load_policy="${KV_LOAD_FAILURE_POLICY:-recompute}"
     local lookup_port="${KV_POOL_LOOKUP_RPC_PORT:-0}"
+
+    local engine_id="0"
+
+    case "$kv_role" in
+        kv_producer|prefill)
+            engine_id="1"
+            ;;
+        kv_consumer|decode)
+            engine_id="2"
+            ;;
+        *)
+            engine_id="${DP_RANK}"
+            ;;
+    esac
 
     local pd_block
     pd_block=$(cat <<EOF
@@ -23,6 +38,7 @@ build_kv_transfer_config() {
   "kv_connector": "${pd_connector}",
   "kv_role": "${kv_role}",
   "kv_port": "${kv_port}",
+  "engine_id": "${engine_id}",
   "kv_connector_extra_config": {
     "prefill": {
       "dp_size": ${P_DP_SIZE},
