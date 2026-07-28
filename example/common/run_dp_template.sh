@@ -74,7 +74,6 @@ if [[ "${ROLE}" == "prefill" ]]; then
     GPU_MEM_UTIL="${P_GPU_MEMORY_UTILIZATION}"
     EXTRA_ARGS=(
         --additional-config '{"enable_cpu_binding":true}'
-        --speculative_config '{"method": "eagle3", "model": "/mnt/a800_weight/MiniMax-M2.7-eagle-model-2", "num_speculative_tokens": 3}'
     )
     if [[ "${P_ENFORCE_EAGER}" == "1" ]]; then
         EXTRA_ARGS+=(--enforce-eager)
