@@ -15,6 +15,9 @@
 # Requires: CONFIGS_FILE
 
 set -euo pipefail
+unset ftp_proxy
+unset https_proxy
+unset http_proxy
 
 COMMON_DIR_BOOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
@@ -54,9 +57,6 @@ elif [[ "${ROLE}" == "decode" ]]; then
     fi
 fi
 
-# Enable Model Runner V2 (MRV2)
-export VLLM_USE_V2_MODEL_RUNNER="${VLLM_USE_V2_MODEL_RUNNER:-1}"
-
 export ASCEND_RT_VISIBLE_DEVICES="${VISIBLE_DEVICES}"
 if is_kv_pool_enabled; then
     export MOONCAKE_CONFIG_PATH
@@ -65,8 +65,6 @@ fi
 mkdir -p "${LOG_DIR}"
 rm -rf "${HOME}/ascend/log/"* 2>/dev/null || true
 
-# Prefix caching: can be controlled via ENABLE_PREFIX_CACHE in configs.sh (default: 1)
-ENABLE_PREFIX_CACHE="${ENABLE_PREFIX_CACHE:-1}"
 
 if [[ "${ROLE}" == "prefill" ]]; then
     KV_ROLE="kv_producer"
@@ -74,12 +72,15 @@ if [[ "${ROLE}" == "prefill" ]]; then
     MAX_MODEL_LEN="${P_MAX_MODEL_LEN}"
     MAX_NUM_BATCHED_TOKENS="${P_MAX_NUM_BATCHED_TOKENS}"
     GPU_MEM_UTIL="${P_GPU_MEMORY_UTILIZATION}"
-    EXTRA_ARGS=(--additional-config '{"enable_cpu_binding":true,"enable_npugraph_ex":true}')
-    if [[ "${ENABLE_PREFIX_CACHE}" == "1" ]]; then
-        EXTRA_ARGS+=(--enable-prefix-caching)
-    fi
+    EXTRA_ARGS=(
+        --additional-config '{"enable_cpu_binding":true}'
+        --speculative_config '{"method": "eagle3", "model": "/mnt/a800_weight/MiniMax-M2.7-eagle-model-2", "num_speculative_tokens": 3}'
+    )
     if [[ "${P_ENFORCE_EAGER}" == "1" ]]; then
         EXTRA_ARGS+=(--enforce-eager)
+    fi
+    if [[ "${P_ASYNC_SCHEDULING:-0}" != "1" ]]; then
+        EXTRA_ARGS+=(--no-async-scheduling)
     fi
 elif [[ "${ROLE}" == "decode" ]]; then
     KV_ROLE="kv_consumer"
@@ -89,11 +90,8 @@ elif [[ "${ROLE}" == "decode" ]]; then
     GPU_MEM_UTIL="${D_GPU_MEMORY_UTILIZATION}"
     EXTRA_ARGS=(
         --compilation-config '{"cudagraph_mode":"FULL_DECODE_ONLY"}'
-        --additional-config '{"recompute_scheduler_enable":true,"enable_cpu_binding":true,"enable_npugraph_ex":true}'
+        --additional-config '{"recompute_scheduler_enable":true,"enable_cpu_binding":true}'
     )
-    if [[ "${ENABLE_PREFIX_CACHE}" == "1" ]]; then
-        EXTRA_ARGS+=(--enable-prefix-caching)
-    fi
     if [[ "${D_ENFORCE_EAGER:-1}" == "1" ]]; then
         EXTRA_ARGS+=(--enforce-eager)
     fi
@@ -104,6 +102,17 @@ else
     echo "[run_dp_template] unknown role: ${ROLE}" >&2
     exit 1
 fi
+
+if [[ "${ENABLE_PREFIX_CACHE}" == "1" ]]; then
+    EXTRA_ARGS+=(--enable-prefix-caching)
+else
+    EXTRA_ARGS+=(--no-enable-prefix-caching)
+fi
+if [[ "${ENABLE_EXPERT_PARALLEL:-0}" == "1" ]]; then
+    EXTRA_ARGS+=(--enable-expert-parallel)
+fi
+
+EXTRA_ARGS=($(printf '%s\n' "${EXTRA_ARGS[@]}" | grep -v '^$'))
 
 KV_TRANSFER_CONFIG="$(build_kv_transfer_config "${KV_ROLE}" "${KV_PORT}")"
 
@@ -119,6 +128,8 @@ PYTHONUNBUFFERED=1 vllm serve "${MODEL_PATH}" \
     --port "${ENGINE_PORT}" \
     --seed 1024 \
     --trust-remote-code \
+    --enable-expert-parallel \
+    --quantization ascend \
     --data-parallel-size "${DP_SIZE}" \
     --data-parallel-rank "${DP_RANK}" \
     --data-parallel-address "${DP_ADDRESS}" \
