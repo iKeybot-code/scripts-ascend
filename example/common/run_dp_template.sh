@@ -73,7 +73,7 @@ if [[ "${ROLE}" == "prefill" ]]; then
     MAX_NUM_BATCHED_TOKENS="${P_MAX_NUM_BATCHED_TOKENS}"
     GPU_MEM_UTIL="${P_GPU_MEMORY_UTILIZATION}"
     EXTRA_ARGS=(
-        --additional-config '{"enable_cpu_binding":true}'
+        --additional-config '{"enable_cpu_binding":true,"enable_fused_mc2":0,"enable_prefill_mc2":0}'
     )
     if [[ "${P_ENFORCE_EAGER}" == "1" ]]; then
         EXTRA_ARGS+=(--enforce-eager)
