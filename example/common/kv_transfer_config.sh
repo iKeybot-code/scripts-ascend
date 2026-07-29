@@ -61,7 +61,21 @@ EOF
   "kv_load_failure_policy": "${load_policy}",
   "kv_connector_extra_config": {
     "connectors": [
-      ${pd_block},
+      {
+        "kv_connector": "${pd_connector}",
+        "kv_role": "${kv_role}",
+        "kv_port": "${kv_port}",
+        "kv_connector_extra_config": {
+          "prefill": {
+            "dp_size": ${P_DP_SIZE},
+            "tp_size": ${P_TP_SIZE}
+          },
+          "decode": {
+            "dp_size": ${D_DP_SIZE},
+            "tp_size": ${D_TP_SIZE}
+          }
+        }
+      },
       {
         "kv_connector": "AscendStoreConnector",
         "kv_role": "${kv_role}",

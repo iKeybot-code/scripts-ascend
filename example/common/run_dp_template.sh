@@ -115,7 +115,11 @@ EXTRA_ARGS=($(printf '%s\n' "${EXTRA_ARGS[@]}" | grep -v '^$'))
 
 KV_TRANSFER_CONFIG="$(build_kv_transfer_config "${KV_ROLE}" "${KV_PORT}")"
 
-LOG_FILE="${LOG_DIR}/${ROLE}_rank${DP_RANK}_$(date '+%m%d%H%M%S').log"
+ATTEMPTS_FILE="${COMMON_DIR}/attempts.txt"
+CURRENT_ATTEMPT=$(cat "${ATTEMPTS_FILE}" 2>/dev/null || echo 0)
+NEXT_ATTEMPT=$((CURRENT_ATTEMPT + 1))
+echo "${NEXT_ATTEMPT}" > "${ATTEMPTS_FILE}"
+LOG_FILE="${LOG_DIR}/${ROLE}_rank${DP_RANK}_${NEXT_ATTEMPT}.log"
 echo "[run_dp_template] role=${ROLE} rank=${DP_RANK} port=${ENGINE_PORT} kv_port=${KV_PORT} ip=${LOCAL_IP}"
 echo "[run_dp_template] pd_connector=${PD_KV_CONNECTOR:-MooncakeConnectorV1} enable_kv_pool=${ENABLE_KV_POOL:-0}"
 echo "[run_dp_template] mrv2=${VLLM_USE_V2_MODEL_RUNNER} prefix_cache=${ENABLE_PREFIX_CACHE}"
