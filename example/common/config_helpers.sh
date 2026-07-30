@@ -231,7 +231,7 @@ setup_node_log_dir() {
     local base="${LOG_DIR_BASE:-${LOG_DIR:-./logs}}"
     local host_tag
     host_tag="$(hostname 2>/dev/null || echo host)"
-    export LOG_DIR="${base}/${CUR_ROLE:-node}${CUR_NODE_INDEX:-X}_${CUR_IP:-${host_tag}}_$(date '+%y%m%d%')"
+    export LOG_DIR="${base}/${CUR_ROLE:-node}${CUR_NODE_INDEX:-X}_${CUR_IP:-${host_tag}}_$(date '+%y%m%d')"
     mkdir -p "${LOG_DIR}"
 }
 
