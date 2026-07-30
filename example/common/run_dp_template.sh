@@ -102,7 +102,7 @@ else
     exit 1
 fi
 
-if [[ "${ENABLE_PREFIX_CACHE}" == "1" ]]; then
+if [[ "${ENABLE_PREFIX_CACHE:-0}" == "1" ]]; then
     EXTRA_ARGS+=(--enable-prefix-caching)
 else
     EXTRA_ARGS+=(--no-enable-prefix-caching)
@@ -110,16 +110,19 @@ fi
 if [[ "${ENABLE_EXPERT_PARALLEL:-0}" == "1" ]]; then
     EXTRA_ARGS+=(--enable-expert-parallel)
 fi
+if [[ "${IS_QUANTIZATION:-0}" == "1" ]]; then
+    EXTRA_ARGS+=(--quantization ascend)
+fi
 
 EXTRA_ARGS=($(printf '%s\n' "${EXTRA_ARGS[@]}" | grep -v '^$'))
 
 KV_TRANSFER_CONFIG="$(build_kv_transfer_config "${KV_ROLE}" "${KV_PORT}")"
 
-ATTEMPTS_FILE="${COMMON_DIR}/attempts.txt"
-CURRENT_ATTEMPT=$(cat "${ATTEMPTS_FILE}" 2>/dev/null || echo 0)
-NEXT_ATTEMPT=$((CURRENT_ATTEMPT + 1))
-echo "${NEXT_ATTEMPT}" > "${ATTEMPTS_FILE}"
-LOG_FILE="${LOG_DIR}/${ROLE}_rank${DP_RANK}_${NEXT_ATTEMPT}.log"
+# ATTEMPTS_FILE="${COMMON_DIR}/attempts.txt"
+# CURRENT_ATTEMPT=$(cat "${ATTEMPTS_FILE}" 2>/dev/null || echo 0)
+# NEXT_ATTEMPT=$((CURRENT_ATTEMPT + 1))
+# echo "${NEXT_ATTEMPT}" > "${ATTEMPTS_FILE}"
+LOG_FILE="${LOG_DIR}/${ROLE}_rank${DP_RANK}_$(date '+%H%M%S').log"
 echo "[run_dp_template] role=${ROLE} rank=${DP_RANK} port=${ENGINE_PORT} kv_port=${KV_PORT} ip=${LOCAL_IP}"
 echo "[run_dp_template] pd_connector=${PD_KV_CONNECTOR:-MooncakeConnectorV1} enable_kv_pool=${ENABLE_KV_POOL:-0}"
 echo "[run_dp_template] mrv2=${VLLM_USE_V2_MODEL_RUNNER} prefix_cache=${ENABLE_PREFIX_CACHE}"
@@ -131,8 +134,6 @@ PYTHONUNBUFFERED=1 vllm serve "${MODEL_PATH}" \
     --port "${ENGINE_PORT}" \
     --seed 1024 \
     --trust-remote-code \
-    --enable-expert-parallel \
-    --quantization ascend \
     --data-parallel-size "${DP_SIZE}" \
     --data-parallel-rank "${DP_RANK}" \
     --data-parallel-address "${DP_ADDRESS}" \

@@ -36,18 +36,20 @@ fi
 # shellcheck disable=SC1091
 source "${COMMON_DIR}/config_helpers.sh"
 
+# ----- Model -----
+export MODEL_PATH="${MODEL_PATH:-/mnt/a800_weight/MiniMax-M2.7-w8a8-QuaRot}"
+export MODEL_NAME="${MODEL_NAME:-minimaxm27}"
+export IS_QUANTIZATION=1
+
 # ----- Feature switches -----
 export ENABLE_KV_POOL=0
 export ENABLE_PREFIX_CACHE=0
+export ENABLE_EXPERT_PARALLEL=1
 export PD_KV_CONNECTOR="${PD_KV_CONNECTOR:-MooncakeConnectorV1}"
 export KV_POOL_BACKEND="${KV_POOL_BACKEND:-mooncake}"
 export KV_LOAD_FAILURE_POLICY="${KV_LOAD_FAILURE_POLICY:-recompute}"
 export KV_POOL_LOOKUP_RPC_PORT="${KV_POOL_LOOKUP_RPC_PORT:-0}"
 export VLLM_USE_V2_MODEL_RUNNER=1
-
-# ----- Model -----
-export MODEL_PATH="${MODEL_PATH:-/mnt/a800_weight/MiniMax-M2.7-w8a8-QuaRot}"
-export MODEL_NAME="${MODEL_NAME:-minimaxm27}"
 
 # =============================================================================
 # Machine inventory (INDEX-ALIGNED). Edit these lists for your cluster.
