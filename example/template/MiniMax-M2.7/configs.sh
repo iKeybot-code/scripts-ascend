@@ -17,13 +17,14 @@
 # =============================================================================
 
 _THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_WORK_SPACE="${_THIS_DIR}/../.."
 
 export SHARED_COMMON_DIR="${SHARED_COMMON_DIR:-/mnt/a800_share/l00848175/scripts-ascend/example/common}"
 if [[ -z "${COMMON_DIR:-}" || ! -f "${COMMON_DIR}/config_helpers.sh" ]]; then
     if [[ -f "${SHARED_COMMON_DIR}/config_helpers.sh" ]]; then
         export COMMON_DIR="$(cd "${SHARED_COMMON_DIR}" && pwd)"
-    elif [[ -f "${_THIS_DIR}/../common/config_helpers.sh" ]]; then
-        export COMMON_DIR="$(cd "${_THIS_DIR}/../common" && pwd)"
+    elif [[ -f "${_WORK_SPACE}/../common/config_helpers.sh" ]]; then
+        export COMMON_DIR="$(cd "${_WORK_SPACE}/../common" && pwd)"
     elif [[ -f "${_THIS_DIR}/common/config_helpers.sh" ]]; then
         export COMMON_DIR="$(cd "${_THIS_DIR}/common" && pwd)"
     else
@@ -36,6 +37,8 @@ fi
 # shellcheck disable=SC1091
 source "${COMMON_DIR}/config_helpers.sh"
 
+
+# =============================================================================
 # ----- Model -----
 export MODEL_PATH="${MODEL_PATH:-/mnt/a800_weight/MiniMax-M2.7-w8a8-QuaRot}"
 export MODEL_NAME="${MODEL_NAME:-minimaxm27}"
@@ -50,6 +53,9 @@ export KV_POOL_BACKEND="${KV_POOL_BACKEND:-mooncake}"
 export KV_LOAD_FAILURE_POLICY="${KV_LOAD_FAILURE_POLICY:-recompute}"
 export KV_POOL_LOOKUP_RPC_PORT="${KV_POOL_LOOKUP_RPC_PORT:-0}"
 export VLLM_USE_V2_MODEL_RUNNER=1
+# =============================================================================
+
+
 
 # =============================================================================
 # Machine inventory (INDEX-ALIGNED). Edit these lists for your cluster.
