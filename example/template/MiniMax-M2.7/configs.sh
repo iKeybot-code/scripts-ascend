@@ -42,8 +42,8 @@ export MODEL_NAME="${MODEL_NAME:-minimaxm27}"
 export IS_QUANTIZATION=1
 
 # ----- Feature switches -----
-export ENABLE_KV_POOL=0
-export ENABLE_PREFIX_CACHE=0
+export ENABLE_KV_POOL=1
+export ENABLE_PREFIX_CACHE=1
 export ENABLE_EXPERT_PARALLEL=1
 export PD_KV_CONNECTOR="${PD_KV_CONNECTOR:-MooncakeConnectorV1}"
 export KV_POOL_BACKEND="${KV_POOL_BACKEND:-mooncake}"
@@ -69,7 +69,7 @@ export P_NODE_HTTP_PORT=()          # e.g. (7100 7100)
 export P_NODE_KV_PORT_BASE=()       # e.g. (36000 36100)
 
 # Decode machines: D0, D1 (join one DP group via D_DP_ADDRESS=D0)
-export DECODE_IPS=("90.90.97.42")
+export DECODE_IPS=("90.90.97.28")
 export DECODE_NICS=(enp194s0f0)
 export D_NODE_VISIBLE_DEVICES=("0,1,2,3,4,5,6,7;8,9,10,11,12,13,14,15")
 export D_NODE_HTTP_PORT=()
@@ -113,12 +113,12 @@ export MOONCAKE_KV_LEASE_TTL="${MOONCAKE_KV_LEASE_TTL:-11000}"
 export MOONCAKE_CONFIG_PATH="${MOONCAKE_CONFIG_PATH:-${_THIS_DIR}/mooncake.json}"
 
 # ----- Serve knobs -----
-export P_MAX_NUM_SEQS=128
+export P_MAX_NUM_SEQS=256
 export P_MAX_MODEL_LEN=135000 
 export P_MAX_NUM_BATCHED_TOKENS=32768
 export P_GPU_MEMORY_UTILIZATION=0.9
 export P_ENFORCE_EAGER=1
-export D_MAX_NUM_SEQS=64
+export D_MAX_NUM_SEQS=256
 export D_MAX_MODEL_LEN=135000 
 export D_MAX_NUM_BATCHED_TOKENS=32768
 export D_GPU_MEMORY_UTILIZATION=0.92
