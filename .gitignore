@@ -18,3 +18,4 @@ site/
 # Node
 node_modules/
 .npm-cache/
+package-lock.json
