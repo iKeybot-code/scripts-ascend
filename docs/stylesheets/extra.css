@@ -456,31 +456,37 @@ body, .md-typeset {
 }
 
 /* ---------- 导航页脚 ---------- */
-.md-footer {
-  background: transparent;
-  color: var(--text-muted);
+[data-md-color-scheme="default"] .md-footer {
+  background: transparent !important;
+  color: var(--text-muted) !important;
 }
-.md-footer a {
-  color: var(--text-muted);
+[data-md-color-scheme="default"] .md-footer a {
+  color: var(--text-muted) !important;
 }
-.md-footer a:hover {
-  color: var(--accent);
+[data-md-color-scheme="default"] .md-footer a:hover {
+  color: var(--accent) !important;
 }
-.md-footer-meta {
-  background: transparent;
-  color: var(--text-muted);
+[data-md-color-scheme="default"] .md-footer-meta {
+  background: transparent !important;
+  color: var(--text-muted) !important;
 }
-.md-footer-meta__inner {
-  color: var(--text-muted);
+[data-md-color-scheme="default"] .md-footer-meta__inner {
+  color: var(--text-muted) !important;
 }
-.md-copyright {
-  color: var(--text-muted);
+[data-md-color-scheme="default"] .md-copyright {
+  color: var(--text-muted) !important;
 }
-.md-social__link {
-  color: var(--text-muted);
+[data-md-color-scheme="default"] .md-copyright__highlight {
+  color: var(--text-muted) !important;
 }
-.md-social__link:hover {
-  color: var(--accent);
+[data-md-color-scheme="default"] .md-footer-copyright__highlight {
+  color: var(--text-muted) !important;
+}
+[data-md-color-scheme="default"] .md-social__link svg {
+  fill: var(--text-muted) !important;
+}
+[data-md-color-scheme="default"] .md-social__link:hover svg {
+  fill: var(--accent) !important;
 }
 
 /* ---------- 禁用 TOC 悬浮（让 toc 自然排列） ---------- */
