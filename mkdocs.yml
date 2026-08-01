@@ -30,15 +30,15 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
-      accent: indigo
+      primary: deep purple
+      accent: deep purple
       toggle:
         icon: material/brightness-7
         name: 切换暗色模式
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: deep purple
+      accent: deep purple
       toggle:
         icon: material/brightness-4
         name: 切换亮色模式

@@ -1,15 +1,24 @@
 /* ====================================================================
-   Scripts Ascend Wiki — 基于 MkDocs Material 默认 Indigo 主题
+   Scripts Ascend Wiki — Dify 风格蓝紫主题
    ==================================================================== */
 @import url('https://cdn.jsdelivr.net/npm/@fontsource-variable/inter/index.css');
+
+/* ---------- 蓝紫配色覆盖 ---------- */
 :root {
   --md-text-font-family: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --md-primary-fg-color: #5046E5;
+  --md-primary-fg-color--light: #7872ED;
+  --md-primary-fg-color--dark: #3B37B8;
+  --md-accent-fg-color: #6366F1;
+  --md-accent-fg-color--transparent: rgba(99, 102, 241, 0.1);
 }
-/* ---------- 字体 ---------- */
+
+/* ---------- 全局字体 ---------- */
 body, .md-typeset {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 /* ---------- Header ---------- */
 .md-header__button.md-logo {
   display: none;
@@ -17,7 +26,67 @@ body, .md-typeset {
 .md-header__title {
   margin-left: 0;
 }
-/* ---------- 12px 统一圆角 ---------- */
+
+/* ---------- Hero 按钮 ---------- */
+.hero-actions {
+  margin: 1rem 0 2rem;
+}
+.hero-actions .md-button {
+  margin-right: 0.5rem;
+}
+.hero-actions .md-button--primary {
+  background-color: var(--md-primary-fg-color);
+  border-color: var(--md-primary-fg-color);
+  color: #fff;
+}
+.hero-actions .md-button--primary:hover {
+  background-color: var(--md-primary-fg-color--dark);
+  border-color: var(--md-primary-fg-color--dark);
+}
+
+/* ---------- Dify 风卡片 ---------- */
+.md-typeset .grid.cards > ul {
+  gap: 1rem;
+}
+.md-typeset .grid.cards > ul > li {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 12px;
+  box-shadow: none;
+  padding: 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  background: var(--md-default-bg-color);
+}
+.md-typeset .grid.cards > ul > li:hover {
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 2px 12px rgba(80, 70, 229, 0.12);
+  transform: translateY(-2px);
+}
+.md-typeset .grid.cards > ul > li > hr {
+  margin: 0.6rem 0;
+  border-color: var(--md-default-fg-color--lightest);
+}
+.md-typeset .grid.cards > ul > li > p {
+  margin: 0.3rem 0;
+}
+.md-typeset .grid.cards > ul > li > p:last-child {
+  margin-top: 0.8rem;
+  font-size: 0.82rem;
+}
+.md-typeset .grid.cards > ul > li > p:last-child a {
+  color: var(--md-accent-fg-color);
+  font-weight: 500;
+  text-decoration: none;
+}
+.md-typeset .grid.cards > ul > li > p:last-child a:hover {
+  text-decoration: underline;
+}
+.md-typeset .grid.cards > ul > li > h3 {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* ---------- 通用圆角 ---------- */
 .md-typeset .admonition,
 .md-typeset details {
   border-radius: 12px;
@@ -25,25 +94,15 @@ body, .md-typeset {
 .md-typeset pre > code {
   border-radius: 12px;
 }
-.md-typeset .grid.cards > ul > li,
-.md-typeset .grid > .card {
-  border-radius: 12px;
-  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
-}
-.md-typeset .grid.cards > ul > li:hover,
-.md-typeset .grid > .card:hover {
-  border-color: var(--md-accent-fg-color);
-  transform: translateY(-2px);
-}
 .md-typeset table:not([class]) {
   border-radius: 12px;
   overflow: hidden;
 }
-/* inline code */
 .md-typeset code,
 .md-typeset kbd {
   border-radius: 6px;
 }
+
 /* ---------- 滚动条 ---------- */
 * {
   scrollbar-width: thin;
@@ -55,7 +114,8 @@ body, .md-typeset {
   background: var(--md-default-fg-color--lighter);
   border-radius: 5px;
 }
-/* ---------- 文档作者 + 最后修改人 ---------- */
+
+/* ---------- 文档作者 ---------- */
 .doc-authors {
   display: flex;
   align-items: center;
@@ -88,4 +148,18 @@ body, .md-typeset {
 }
 .doc-authors__date {
   margin-left: 2px;
+}
+
+/* ---------- 首页隐藏侧边栏 ---------- */
+.md-content__inner > h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.3rem;
+}
+.md-content__inner > h1 + p {
+  font-size: 1.05rem;
+  color: var(--md-default-fg-color--light);
+  max-width: 36rem;
+  line-height: 1.6;
 }
