@@ -1,63 +1,60 @@
 /* ====================================================================
    Scripts Ascend Wiki
-   暖奶油白 #F4F1EA + Claude 珊瑚橙 #D97757
-   标题 Lora + 正文 Inter + 12px 统一圆角 + 4px 间距体系
+   Tech Blue 主题 — 简洁科技风
    ==================================================================== */
-@import url('https://cdn.jsdelivr.net/npm/@fontsource-variable/lora/index.css');
 @import url('https://cdn.jsdelivr.net/npm/@fontsource-variable/inter/index.css');
 :root {
   --md-text-font-family: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
   --md-code-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  --md-heading-font-family: "Lora Variable", "Lora", Georgia, "Source Han Serif SC", "Noto Serif SC", "Songti SC", serif;
 }
-/* ---------- 配色：亮色（暖奶油白 + 珊瑚橙）---------- */
+/* ---------- 配色：亮色 ---------- */
 [data-md-color-scheme="default"] {
-  --md-primary-fg-color:              #F4F1EA;
-  --md-primary-fg-color--light:       #ECE8DF;
-  --md-primary-fg-color--dark:        #DDD7CB;
-  --md-primary-bg-color:              #1A1A1A;
-  --md-primary-bg-color--light:       #4A4843;
-  --md-accent-fg-color:               #D97757;
-  --md-accent-fg-color--transparent:  rgba(217, 119, 87, 0.10);
-  --md-default-bg-color:              #F4F1EA;
-  --md-default-fg-color:              #1A1A1A;
-  --md-default-fg-color--light:       #5C5A54;
-  --md-default-fg-color--lighter:     #8A8780;
-  --md-default-fg-color--lightest:    #C9C4B8;
-  --md-text-color:                    #1A1A1A;
-  --md-text-color--light:             #5C5A54;
-  --md-typeset-color:                 #1A1A1A;
-  --md-typeset-a-color:               #D97757;
-  --md-code-bg-color:                 #EDE9E2;
-  --md-code-fg-color:                 #2A2926;
-  --md-code-hl-color:                 rgba(217, 119, 87, 0.16);
-  --md-footer-bg-color:               #1A1A1A;
-  --md-footer-fg-color:               #F4F1EA;
+  --md-primary-fg-color:              #1A56DB;
+  --md-primary-fg-color--light:       #3B82F6;
+  --md-primary-fg-color--dark:        #1E40AF;
+  --md-primary-bg-color:              #FFFFFF;
+  --md-primary-bg-color--light:       #E5E7EB;
+  --md-accent-fg-color:               #2563EB;
+  --md-accent-fg-color--transparent:  rgba(37, 99, 235, 0.10);
+  --md-default-bg-color:              #FFFFFF;
+  --md-default-fg-color:              #1F2937;
+  --md-default-fg-color--light:       #4B5563;
+  --md-default-fg-color--lighter:     #6B7280;
+  --md-default-fg-color--lightest:    #D1D5DB;
+  --md-text-color:                    #1F2937;
+  --md-text-color--light:             #4B5563;
+  --md-typeset-color:                 #1F2937;
+  --md-typeset-a-color:               #2563EB;
+  --md-code-bg-color:                 #F3F4F6;
+  --md-code-fg-color:                 #1F2937;
+  --md-code-hl-color:                 rgba(37, 99, 235, 0.12);
+  --md-footer-bg-color:               #111827;
+  --md-footer-fg-color:               #E5E7EB;
 }
 /* ---------- 配色：暗色 ---------- */
 [data-md-color-scheme="slate"] {
-  --md-hue:                           25deg;
-  --md-primary-fg-color:              #1A1815;
-  --md-primary-fg-color--light:       #26231E;
-  --md-primary-fg-color--dark:        #0E0D0B;
-  --md-primary-bg-color:              #F4F1EA;
-  --md-primary-bg-color--light:       #C9C4B8;
-  --md-accent-fg-color:               #E0906F;
-  --md-accent-fg-color--transparent:  rgba(224, 144, 111, 0.14);
-  --md-default-bg-color:              #1A1815;
-  --md-default-fg-color:              #F4F1EA;
-  --md-default-fg-color--light:       #C9C4B8;
-  --md-default-fg-color--lighter:     #8A8780;
-  --md-default-fg-color--lightest:    #4A4843;
-  --md-text-color:                    #E8E4DB;
-  --md-text-color--light:             #C9C4B8;
-  --md-typeset-color:                 #E8E4DB;
-  --md-typeset-a-color:               #E0906F;
-  --md-code-bg-color:                 #26231E;
-  --md-code-fg-color:                 #F4F1EA;
-  --md-code-hl-color:                 rgba(224, 144, 111, 0.20);
-  --md-footer-bg-color:               #0E0D0B;
-  --md-footer-fg-color:               #F4F1EA;
+  --md-hue:                           220deg;
+  --md-primary-fg-color:              #0F172A;
+  --md-primary-fg-color--light:       #1E293B;
+  --md-primary-fg-color--dark:        #020617;
+  --md-primary-bg-color:              #E2E8F0;
+  --md-primary-bg-color--light:       #94A3B8;
+  --md-accent-fg-color:               #60A5FA;
+  --md-accent-fg-color--transparent:  rgba(96, 165, 250, 0.14);
+  --md-default-bg-color:              #0F172A;
+  --md-default-fg-color:              #E2E8F0;
+  --md-default-fg-color--light:       #94A3B8;
+  --md-default-fg-color--lighter:     #64748B;
+  --md-default-fg-color--lightest:    #334155;
+  --md-text-color:                    #E2E8F0;
+  --md-text-color--light:             #94A3B8;
+  --md-typeset-color:                 #E2E8F0;
+  --md-typeset-a-color:               #60A5FA;
+  --md-code-bg-color:                 #1E293B;
+  --md-code-fg-color:                 #E2E8F0;
+  --md-code-hl-color:                 rgba(96, 165, 250, 0.16);
+  --md-footer-bg-color:               #020617;
+  --md-footer-fg-color:               #E2E8F0;
 }
 /* ---------- 字体应用 ---------- */
 body,
@@ -73,17 +70,16 @@ body,
 .md-typeset kbd {
   font-family: var(--md-code-font-family);
 }
-/* 标题：Lora 衬线字体 */
+/* 标题 */
 .md-typeset h1,
 .md-typeset h2,
 .md-typeset h3,
 .md-typeset h4,
 .md-typeset h5,
 .md-typeset h6 {
-  font-family: var(--md-heading-font-family);
   font-weight: 600;
   letter-spacing: 0;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 .md-typeset h1 {
   letter-spacing: -0.01em;
@@ -92,18 +88,17 @@ body,
 [data-md-color-scheme="default"] .md-typeset h1 {
   color: #000000;
 }
-/* 左侧栏 / 右侧栏 / header 站点名 统一用标题字体 */
+/* 左侧栏 / 右侧栏 / header 站点名 */
 .md-nav,
 .md-toc,
 .md-tabs,
 .md-header__title,
 .md-header__topic,
 .md-header__ellipsis {
-  font-family: var(--md-heading-font-family);
 }
 /* ---------- Header 分隔 ---------- */
 .md-header {
-  box-shadow: 0 1px 0 rgba(26, 26, 26, 0.08);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
   background: var(--md-primary-fg-color);
 }
 /* 隐藏 header logo 占位，站点名顶左对齐 */
@@ -114,22 +109,22 @@ body,
   margin-left: 0;
 }
 [data-md-color-scheme="slate"] .md-header {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
 }
 [data-md-color-scheme="default"] .md-header__title,
 [data-md-color-scheme="default"] .md-header__button,
 [data-md-color-scheme="default"] .md-header__subject {
-  color: #1A1A1A;
+  color: #FFFFFF;
 }
 [data-md-color-scheme="default"] .md-search__input::placeholder {
-  color: #8A8780;
+  color: #94A3B8;
 }
 /* 搜索框背景 */
 [data-md-color-scheme="default"] .md-search__form {
-  background-color: #EDE9E2;
+  background-color: rgba(255, 255, 255, 0.15);
 }
 [data-md-color-scheme="default"] .md-search__form:hover {
-  background-color: #E5E1DA;
+  background-color: rgba(255, 255, 255, 0.25);
 }
 /* ---------- 链接 hover ---------- */
 .md-typeset a:focus,
@@ -156,7 +151,7 @@ body,
 .md-typeset .grid.cards > ul > li:hover,
 .md-typeset .grid > .card:hover {
   border-color: var(--md-accent-fg-color);
-  box-shadow: 0 8px 24px rgba(217, 119, 87, 0.16);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
   transform: translateY(-2px);
 }
 .md-typeset table:not([class]) {
@@ -189,10 +184,10 @@ body,
 }
 /* ---------- 选择高亮 ---------- */
 ::selection {
-  background: rgba(217, 119, 87, 0.24);
+  background: rgba(37, 99, 235, 0.20);
 }
 [data-md-color-scheme="slate"] ::selection {
-  background: rgba(224, 144, 111, 0.30);
+  background: rgba(96, 165, 250, 0.25);
 }
 /* ---------- 文档作者 + 最后修改人 ---------- */
 .doc-authors {
