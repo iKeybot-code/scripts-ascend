@@ -5,50 +5,62 @@ hide:
   - toc
 ---
 
+<div class="hero-section" markdown>
+
 # Scripts Ascend Wiki
+
+<div class="hero-tagline">
 
 昇腾大模型推理开发脚本与工具集。使用指南、调测复盘、设计方案。
 
-<div class="hero-actions" markdown>
+</div>
 
-[实践指南](practice/index.md){ .md-button .md-button--primary }
-[GitHub](https://github.com/iKeybot-code/scripts-ascend){ .md-button }
+<div class="hero-actions">
+
+[快速开始](practice/index.md){ .md-button }
+[GitHub :fontawesome-brands-github:](https://github.com/iKeybot-code/scripts-ascend){ .md-button .md-button--secondary }
 
 </div>
 
----
+</div>
 
-<div class="grid cards" markdown>
+<div class="features-section" markdown>
 
--   2026-07-28
+<div class="feature-card" markdown>
 
-    [**实践指南**](practice/index.md)
+<div class="feature-icon">:material-wrench:</div>
 
-    编译安装、测试拉起、工具使用方法。涵盖 vLLM Ascend 环境搭建与常用脚本。
+<h3>实践指南</h3>
 
-    <span class="tag-badge">vLLM</span> <span class="tag-badge">Ascend</span>
+编译安装、测试拉起、工具使用方法。涵盖 vLLM Ascend 环境搭建与常用脚本。
 
-    [Read Article](practice/index.md)
+[了解更多 →](practice/index.md)
 
--   2026-07-28
+</div>
 
-    [**调测经验**](debug/index.md)
+<div class="feature-card" markdown>
 
-    线上问题定位复盘、环境调试踩坑、精度回归追踪。
+<div class="feature-icon">:material-bug:</div>
 
-    <span class="tag-badge">Debug</span> <span class="tag-badge">Tuning</span>
+<h3>调测经验</h3>
 
-    [Read Article](debug/index.md)
+线上问题定位复盘、环境调试踩坑、精度回归追踪。
 
--   2026-07-28
+[了解更多 →](debug/index.md)
 
-    [**设计方案**](design/index.md)
+</div>
 
-    关键模块的源码追踪与方案分析。KVCache 管理、Prefix Cache 等核心机制。
+<div class="feature-card" markdown>
 
-    <span class="tag-badge">Design</span> <span class="tag-badge">KVCache</span>
+<div class="feature-icon">:material-pen:</div>
 
-    [Read Article](design/index.md)
+<h3>设计方案</h3>
+
+关键模块的源码追踪与方案分析。KVCache 管理、Prefix Cache 等核心机制。
+
+[了解更多 →](design/index.md)
+
+</div>
 
 </div>
 

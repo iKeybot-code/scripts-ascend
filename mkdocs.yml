@@ -3,13 +3,15 @@ site_description: 昇腾推理开发脚本与工具集 Wiki
 site_author: 推理开发部
 site_url: !ENV [READTHEDOCS_CANONICAL_URL, "https://scripts-ascend.readthedocs.io/"]
 repo_url: https://github.com/iKeybot-code/scripts-ascend
-repo_name: scripts-ascend
+repo_name: iKeybot-code/scripts-ascend
 edit_uri: edit/main/docs/
 docs_dir: docs
 theme:
   name: material
   language: zh
   custom_dir: overrides
+  favicon: assets/favicon.svg
+  logo: assets/logo.svg
   features:
     - navigation.sections
     - navigation.indexes
@@ -26,8 +28,8 @@ theme:
     - content.action.view
   palette:
     - scheme: default
-      primary: custom
-      accent: custom
+      primary: white
+      accent: green
       toggle:
         icon: material/weather-night
         name: 切换暗色模式
