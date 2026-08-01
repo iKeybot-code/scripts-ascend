@@ -92,6 +92,16 @@ body, .md-typeset {
 .md-search__icon {
   color: var(--text-muted);
 }
+/* 搜索弹窗无阴影 */
+.md-search__overlay {
+  box-shadow: none;
+}
+.md-search__scrollwrap {
+  box-shadow: none;
+}
+.md-search__output {
+  box-shadow: none;
+}
 
 /* ---------- 内容区域 ---------- */
 .md-main__inner {
@@ -107,6 +117,16 @@ body, .md-typeset {
 }
 .md-nav--primary .md-nav__title {
   background: transparent;
+}
+/* 侧边栏标题与菜单间距 */
+.md-nav--primary > .md-nav__title {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+}
+/* 右侧 TOC 标题间距 */
+.md-nav--secondary > .md-nav__title {
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
 }
 /* 侧边栏链接 */
 .md-nav__link {
@@ -221,7 +241,7 @@ body, .md-typeset {
   font-size: 0.8rem;
   color: #6b7280;
 }
-/* 卡片标题 */
+/* 卡片标题（h3 或 p>a 两种格式） */
 .md-typeset .grid.cards > ul > li > h3 {
   margin: 0 0 0.6rem;
   font-size: 1.5rem;
@@ -235,6 +255,20 @@ body, .md-typeset {
 }
 .md-typeset .grid.cards > ul > li > h3 a:hover {
   color: var(--accent);
+}
+/* 链接形式的标题（grid cards 中 p > a） */
+.md-typeset .grid.cards > ul > li > p > a:only-child:has(strong) {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+  text-decoration: none;
+}
+.md-typeset .grid.cards > ul > li > p > a:only-child:has(strong):hover {
+  color: var(--accent);
+}
+.md-typeset .grid.cards > ul > li > p:has(> a:only-child) {
+  margin: 0 0 0.6rem;
 }
 /* 卡片描述 */
 .md-typeset .grid.cards > ul > li > p {
