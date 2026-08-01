@@ -54,6 +54,7 @@ python "${COMMON_DIR}/launch_online_dp.py" \
     --role decode \
     --dp-size "${D_DP_SIZE}" \
     --tp-size "${D_TP_SIZE}" \
+    --pp-size "${D_PP_SIZE:-1}" \
     --dp-size-local "${D_DP_SIZE_LOCAL}" \
     --dp-rank-start "${DP_RANK_START}" \
     --dp-address "${D_DP_ADDRESS}" \

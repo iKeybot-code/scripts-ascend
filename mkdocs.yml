@@ -1,0 +1,98 @@
+site_name: Scripts Ascend Wiki
+site_description: 昇腾推理开发脚本与工具集 Wiki
+site_author: 推理开发部
+site_url: !ENV [READTHEDOCS_CANONICAL_URL, "https://scripts-ascend.readthedocs.io/"]
+repo_url: https://github.com/iKeybot-code/scripts-ascend
+repo_name: scripts-ascend
+edit_uri: edit/main/docs/
+docs_dir: docs
+theme:
+  name: material
+  language: zh
+  custom_dir: overrides
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - navigation.tracking
+    - navigation.prune
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.action.edit
+    - content.action.view
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: 切换暗色模式
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: 切换亮色模式
+  icon:
+    repo: fontawesome/brands/github
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+plugins:
+  - search:
+      lang:
+        - en
+        - ja
+  - meta
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: date
+      timezone: Asia/Shanghai
+hooks:
+  - docs/hooks/page_authors.py
+nav:
+  - 首页: index.md
+  - 调测经验:
+      - debug/index.md
+  - 设计方案:
+      - design/index.md
+  - 实践指南:
+      - practice/index.md
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/iKeybot-code/scripts-ascend
+extra_css:
+  - stylesheets/extra.css
+extra_javascript:
+  - javascripts/extra.js
+copyright: Copyright &copy; 推理开发部

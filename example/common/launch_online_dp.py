@@ -20,6 +20,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--role", choices=["prefill", "decode"], required=True)
     parser.add_argument("--dp-size", type=int, required=True, help="Global data parallel size.")
     parser.add_argument("--tp-size", type=int, default=1, help="Tensor parallel size.")
+    parser.add_argument("--pp-size", type=int, default=1, help="Pipeline parallel size.")
     parser.add_argument("--dp-size-local", type=int, default=-1, help="Local DP size on this node.")
     parser.add_argument("--dp-rank-start", type=int, default=0, help="Starting global DP rank.")
     parser.add_argument("--dp-address", type=str, required=True, help="DP master address.")
@@ -52,6 +53,7 @@ def run_command(
     tp_size: int,
     role: str,
     kv_port: int,
+    pp_size: int = 1,
 ) -> None:
     command = [
         "bash",
@@ -65,6 +67,7 @@ def run_command(
         str(tp_size),
         role,
         str(kv_port),
+        str(pp_size),
     ]
     print("[launch_online_dp] exec:", " ".join(command), flush=True)
     subprocess.run(command, check=True)
@@ -113,6 +116,7 @@ def main() -> int:
                 args.tp_size,
                 args.role,
                 kv_port,
+                args.pp_size,
             ),
         )
         processes.append(process)

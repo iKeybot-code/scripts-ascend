@@ -315,13 +315,16 @@ print_pd_topology() {
     echo "========== PD Topology (shared-dir same script) =========="
     echo "Model: ${MODEL_NAME} (${MODEL_PATH})"
     echo "KV pool: ${ENABLE_KV_POOL:-0}  connector: ${PD_KV_CONNECTOR:-MooncakeConnectorV1}"
+    echo "  flashcomm1=${ENABLE_FLASHCOMM1:-0}  fused_mc2=${ENABLE_FUSED_MC2:-0}  npugraph_ex=${ENABLE_NPUGRAPH_EX:-0}"
+    echo "  speculative=${SPECULATIVE_METHOD:-none}  weight_nz=${WEIGHT_NZ_MODE:-0}"
     echo "This host IPs: ${local_ips}"
     echo
     echo "How to differentiate machines:"
     echo "  1) Edit IP-aligned lists in configs.sh (IPS/NICS/devices/ports)"
     echo "  2) Or pass: bash run.sh prefill|decode [--node-index N | --node-ip IP]"
     echo
-    echo "Prefill: nodes=${#PREFILL_IPS[@]}  DP=${P_DP_SIZE}  TP=${P_TP_SIZE}  local_DP=${P_DP_SIZE_LOCAL}"
+    echo "Prefill: nodes=${#PREFILL_IPS[@]}  DP=${P_DP_SIZE}  TP=${P_TP_SIZE}  PP=${P_PP_SIZE:-1}  local_DP=${P_DP_SIZE_LOCAL}"
+    echo "  pp_layer_partition=${P_PP_LAYER_PARTITION:-none}  cudagraph=${P_CUDAGRAPH_MODE:-none}"
     echo "  dp_address=${P_DP_ADDRESS}  rpc=${P_DP_RPC_PORT}  http_base=${P_VLLM_START_PORT}  kv_base=${P_KV_PORT_BASE}"
     for i in "${!PREFILL_IPS[@]}"; do
         echo "  [P${i}] ip=${PREFILL_IPS[$i]} nic=${PREFILL_NICS[$i]}"
@@ -333,7 +336,8 @@ print_pd_topology() {
         fi
     done
     echo
-    echo "Decode: nodes=${#DECODE_IPS[@]}  DP=${D_DP_SIZE}  TP=${D_TP_SIZE}  local_DP=${D_DP_SIZE_LOCAL}"
+    echo "Decode: nodes=${#DECODE_IPS[@]}  DP=${D_DP_SIZE}  TP=${D_TP_SIZE}  PP=${D_PP_SIZE:-1}  local_DP=${D_DP_SIZE_LOCAL}"
+    echo "  pp_layer_partition=${D_PP_LAYER_PARTITION:-none}  cudagraph=${D_CUDAGRAPH_MODE:-none}"
     echo "  dp_address=${D_DP_ADDRESS}  rpc=${D_DP_RPC_PORT}  http_base=${D_VLLM_START_PORT}  kv_base=${D_KV_PORT_BASE}"
     for i in "${!DECODE_IPS[@]}"; do
         echo "  [D${i}] ip=${DECODE_IPS[$i]} nic=${DECODE_NICS[$i]}"

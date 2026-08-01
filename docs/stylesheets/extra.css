@@ -1,0 +1,230 @@
+/* ====================================================================
+   Scripts Ascend Wiki
+   暖奶油白 #F4F1EA + Claude 珊瑚橙 #D97757
+   标题 Lora + 正文 Inter + 12px 统一圆角 + 4px 间距体系
+   ==================================================================== */
+@import url('https://cdn.jsdelivr.net/npm/@fontsource-variable/lora/index.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource-variable/inter/index.css');
+:root {
+  --md-text-font-family: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --md-code-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --md-heading-font-family: "Lora Variable", "Lora", Georgia, "Source Han Serif SC", "Noto Serif SC", "Songti SC", serif;
+}
+/* ---------- 配色：亮色（暖奶油白 + 珊瑚橙）---------- */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:              #F4F1EA;
+  --md-primary-fg-color--light:       #ECE8DF;
+  --md-primary-fg-color--dark:        #DDD7CB;
+  --md-primary-bg-color:              #1A1A1A;
+  --md-primary-bg-color--light:       #4A4843;
+  --md-accent-fg-color:               #D97757;
+  --md-accent-fg-color--transparent:  rgba(217, 119, 87, 0.10);
+  --md-default-bg-color:              #F4F1EA;
+  --md-default-fg-color:              #1A1A1A;
+  --md-default-fg-color--light:       #5C5A54;
+  --md-default-fg-color--lighter:     #8A8780;
+  --md-default-fg-color--lightest:    #C9C4B8;
+  --md-text-color:                    #1A1A1A;
+  --md-text-color--light:             #5C5A54;
+  --md-typeset-color:                 #1A1A1A;
+  --md-typeset-a-color:               #D97757;
+  --md-code-bg-color:                 #EDE9E2;
+  --md-code-fg-color:                 #2A2926;
+  --md-code-hl-color:                 rgba(217, 119, 87, 0.16);
+  --md-footer-bg-color:               #1A1A1A;
+  --md-footer-fg-color:               #F4F1EA;
+}
+/* ---------- 配色：暗色 ---------- */
+[data-md-color-scheme="slate"] {
+  --md-hue:                           25deg;
+  --md-primary-fg-color:              #1A1815;
+  --md-primary-fg-color--light:       #26231E;
+  --md-primary-fg-color--dark:        #0E0D0B;
+  --md-primary-bg-color:              #F4F1EA;
+  --md-primary-bg-color--light:       #C9C4B8;
+  --md-accent-fg-color:               #E0906F;
+  --md-accent-fg-color--transparent:  rgba(224, 144, 111, 0.14);
+  --md-default-bg-color:              #1A1815;
+  --md-default-fg-color:              #F4F1EA;
+  --md-default-fg-color--light:       #C9C4B8;
+  --md-default-fg-color--lighter:     #8A8780;
+  --md-default-fg-color--lightest:    #4A4843;
+  --md-text-color:                    #E8E4DB;
+  --md-text-color--light:             #C9C4B8;
+  --md-typeset-color:                 #E8E4DB;
+  --md-typeset-a-color:               #E0906F;
+  --md-code-bg-color:                 #26231E;
+  --md-code-fg-color:                 #F4F1EA;
+  --md-code-hl-color:                 rgba(224, 144, 111, 0.20);
+  --md-footer-bg-color:               #0E0D0B;
+  --md-footer-fg-color:               #F4F1EA;
+}
+/* ---------- 字体应用 ---------- */
+body,
+.md-typeset {
+  font-family: var(--md-text-font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
+  text-rendering: optimizeLegibility;
+}
+.md-typeset pre > code,
+.md-typeset code,
+.md-typeset kbd {
+  font-family: var(--md-code-font-family);
+}
+/* 标题：Lora 衬线字体 */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  font-family: var(--md-heading-font-family);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+.md-typeset h1 {
+  letter-spacing: -0.01em;
+}
+/* 文档大标题亮色下强制纯黑 */
+[data-md-color-scheme="default"] .md-typeset h1 {
+  color: #000000;
+}
+/* 左侧栏 / 右侧栏 / header 站点名 统一用标题字体 */
+.md-nav,
+.md-toc,
+.md-tabs,
+.md-header__title,
+.md-header__topic,
+.md-header__ellipsis {
+  font-family: var(--md-heading-font-family);
+}
+/* ---------- Header 分隔 ---------- */
+.md-header {
+  box-shadow: 0 1px 0 rgba(26, 26, 26, 0.08);
+  background: var(--md-primary-fg-color);
+}
+/* 隐藏 header logo 占位，站点名顶左对齐 */
+.md-header__button.md-logo {
+  display: none;
+}
+.md-header__title {
+  margin-left: 0;
+}
+[data-md-color-scheme="slate"] .md-header {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+[data-md-color-scheme="default"] .md-header__title,
+[data-md-color-scheme="default"] .md-header__button,
+[data-md-color-scheme="default"] .md-header__subject {
+  color: #1A1A1A;
+}
+[data-md-color-scheme="default"] .md-search__input::placeholder {
+  color: #8A8780;
+}
+/* 搜索框背景 */
+[data-md-color-scheme="default"] .md-search__form {
+  background-color: #EDE9E2;
+}
+[data-md-color-scheme="default"] .md-search__form:hover {
+  background-color: #E5E1DA;
+}
+/* ---------- 链接 hover ---------- */
+.md-typeset a:focus,
+.md-typeset a:hover {
+  color: var(--md-accent-fg-color);
+}
+/* ---------- 12px 统一圆角 ---------- */
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 12px;
+}
+.md-typeset pre > code {
+  border-radius: 12px;
+}
+.md-button {
+  border-radius: 12px;
+}
+.md-typeset .grid.cards > ul > li,
+.md-typeset .grid > .card {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 12px;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.md-typeset .grid.cards > ul > li:hover,
+.md-typeset .grid > .card:hover {
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 8px 24px rgba(217, 119, 87, 0.16);
+  transform: translateY(-2px);
+}
+.md-typeset table:not([class]) {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--md-default-fg-color--lightest);
+}
+/* inline code */
+.md-typeset code,
+.md-typeset kbd {
+  border-radius: 6px;
+}
+/* ---------- 滚动条 ---------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-default-fg-color--lighter) transparent;
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--md-default-fg-color--lighter);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--md-accent-fg-color);
+}
+/* ---------- 侧边栏选中态 ---------- */
+.md-nav__item--active > .md-nav__link {
+  color: var(--md-accent-fg-color);
+}
+/* ---------- 选择高亮 ---------- */
+::selection {
+  background: rgba(217, 119, 87, 0.24);
+}
+[data-md-color-scheme="slate"] ::selection {
+  background: rgba(224, 144, 111, 0.30);
+}
+/* ---------- 文档作者 + 最后修改人 ---------- */
+.doc-authors {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: -0.3rem 0 1.2rem;
+  font-size: 0.64rem;
+  color: var(--md-default-fg-color--light);
+  flex-wrap: wrap;
+}
+.doc-authors__label {
+  color: var(--md-default-fg-color--lighter);
+}
+.doc-authors__avatar img {
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  vertical-align: middle;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  transition: border-color .2s;
+}
+.doc-authors__avatar:hover img {
+  border-color: var(--md-accent-fg-color);
+}
+.doc-authors__name {
+  font-weight: 500;
+  color: var(--md-default-fg-color--light);
+}
+.doc-authors__sep {
+  color: var(--md-default-fg-color--lightest);
+}
+.doc-authors__date {
+  margin-left: 2px;
+}

@@ -36,12 +36,45 @@ export PD_KV_CONNECTOR=MooncakeConnectorV1
 # 仅 ENABLE_KV_POOL=1 时生效
 export KV_POOL_BACKEND=mooncake
 export KV_LOAD_FAILURE_POLICY=recompute
+
+# 引擎级开关（env vars）
+export ENABLE_FLASHCOMM1=0       # VLLM_ASCEND_ENABLE_FLASHCOMM1
+export ENABLE_FUSED_MC2=0        # VLLM_ASCEND_ENABLE_FUSED_MC2
+export VLLM_SERVER_DEV_MODE=0
+
+# additional-config 布尔开关（由 run_dp_template.sh 动态拼装 JSON）
+export ENABLE_REDUCE_SAMPLE=0
+export ENABLE_CPU_BINDING=1
+export ENABLE_NPUGRAPH_EX=0      # ascend_compilation_config.enable_npugraph_ex
+export WEIGHT_NZ_MODE=0
+export P_RECOMPUTE_SCHEDULER=0   # Prefill recompute_scheduler_enable
+export D_RECOMPUTE_SCHEDULER=1   # Decode recompute_scheduler_enable
+
+# 投机解码
+export SPECULATIVE_METHOD=""                    # e.g. "eagle3"
+export SPECULATIVE_MODEL_PATH=""                # eagle 模型路径
+export P_SPECULATIVE_TOKENS=1                   # Prefill draft tokens
+export D_SPECULATIVE_TOKENS=3                   # Decode draft tokens
+
+# 编译配置
+export P_CUDAGRAPH_MODE=""                      # e.g. "FULL_DECODE_ONLY"
+export D_CUDAGRAPH_MODE=""                      # e.g. "FULL_DECODE_ONLY"
+
+# Pipeline Parallel（可选，默认 1 = 关闭）
+export P_PP_SIZE=1
+export P_PP_LAYER_PARTITION=""                  # e.g. "32,30"
+export D_PP_SIZE=1
+export D_PP_LAYER_PARTITION=""                  # e.g. "32,30"
 ```
 
-生成规则（`common/kv_transfer_config.sh`）：
+生成规则（`common/kv_transfer_config.sh` + `common/run_dp_template.sh`）：
 
 - `ENABLE_KV_POOL=0`：仅使用 `PD_KV_CONNECTOR`（PD 分离）
 - `ENABLE_KV_POOL=1`：`MultiConnector` = `PD_KV_CONNECTOR` + `AscendStoreConnector(backend=mooncake)`
+- `PP_SIZE > 1` 时：`--pipeline-parallel-size` 加入 vllm 命令行，`VLLM_PP_LAYER_PARTITION` 环境变量导出，`kv_connector_extra_config` 自动包含 `pp_size` / `pp_layer_partition`
+- `additional-config`：根据上述布尔开关**动态构建** JSON（非硬编码），仅非默认值才包含
+- `speculative_config`：仅在 `SPECULATIVE_METHOD` 和 `SPECULATIVE_MODEL_PATH` 均非空时生成
+- `compilation-config`：仅在 `P/D_CUDAGRAPH_MODE` 非空时生成
 - Proxy：若 connector 名含 `Layerwise`，自动使用 layerwise proxy；否则使用普通 proxy
 - `bash run.sh mooncake_master`：仅在 `ENABLE_KV_POOL=1` 时真正启动；否则直接跳过
 
@@ -182,15 +215,64 @@ D_VISIBLE_DEVICES_LIST=(...)
 ```bash
 ENABLE_KV_POOL=0|1
 PD_KV_CONNECTOR=MooncakeConnectorV1|MooncakeLayerwiseConnector
-KV_POOL_BACKEND=mooncake          # ENABLE_KV_POOL=1
+KV_POOL_BACKEND=mooncake                    # ENABLE_KV_POOL=1
 MOONCAKE_MASTER_IP / PORT / GLOBAL_SEGMENT_SIZE
+
+# 引擎级开关
+ENABLE_FLASHCOMM1=0|1                       # VLLM_ASCEND_ENABLE_FLASHCOMM1
+ENABLE_FUSED_MC2=0|1                        # VLLM_ASCEND_ENABLE_FUSED_MC2
+VLLM_SERVER_DEV_MODE=0|1
+
+# additional-config 动态开关（由 run_dp_template.sh 拼装 JSON）
+ENABLE_REDUCE_SAMPLE=0|1                    # additional-config: enable_reduce_sample
+ENABLE_CPU_BINDING=0|1                      # additional-config: enable_cpu_binding
+ENABLE_NPUGRAPH_EX=0|1                      # additional-config: ascend_compilation_config.enable_npugraph_ex
+WEIGHT_NZ_MODE=0|1                          # additional-config: weight_nz_mode
+P_RECOMPUTE_SCHEDULER=0|1                   # Prefill: recompute_scheduler_enable
+D_RECOMPUTE_SCHEDULER=0|1                   # Decode: recompute_scheduler_enable
 ```
 
-### 3.3 端口与并行
+### 3.3 投机解码
+
+```bash
+SPECULATIVE_METHOD=""                       # e.g. "eagle3"（空 = 关闭投机解码）
+SPECULATIVE_MODEL_PATH=""                   # eagle 模型路径
+P_SPECULATIVE_TOKENS=1                      # Prefill 端 draft token 数
+D_SPECULATIVE_TOKENS=3                      # Decode 端 draft token 数
+```
+
+> 仅当 `SPECULATIVE_METHOD` 和 `SPECULATIVE_MODEL_PATH` 均非空且 `*_SPECULATIVE_TOKENS > 0` 时，才会生成 `--speculative_config` JSON。
+
+### 3.4 编译配置
+
+```bash
+P_CUDAGRAPH_MODE=""                         # Prefill: e.g. "" 或 "FULL_DECODE_ONLY"
+D_CUDAGRAPH_MODE=""                         # Decode: e.g. "FULL_DECODE_ONLY"
+```
+
+> 仅在非空时生成 `--compilation-config '{"cudagraph_mode":"<value>"}'`。
+
+### 3.5 Pipeline Parallel
+
+```bash
+P_PP_SIZE=1                                 # Prefill pipeline parallel size（默认 1 = 关闭）
+P_PP_LAYER_PARTITION=""                     # e.g. "32,30"
+D_PP_SIZE=1                                 # Decode pipeline parallel size
+D_PP_LAYER_PARTITION=""                     # e.g. "32,30"
+```
+
+> `PP_SIZE > 1` 时：
+> - 自动添加 `--pipeline-parallel-size` 到 vllm 命令行
+> - 导出 `VLLM_PP_LAYER_PARTITION` 环境变量
+> - `kv_connector_extra_config` 自动包含 `pp_size` / `pp_layer_partition`
+>
+> 注意：PP 需要 `VISIBLE_DEVICES` 覆盖 TP × PP 张卡（e.g. TP=8, PP=2 → 16 张卡/rank）。
+
+### 3.6 端口与并行
 
 ```bash
 PROXY_PORT / P_VLLM_START_PORT / D_VLLM_START_PORT
-P_KV_PORT_BASE / D_KV_PORT_BASE   # 建议避开 20000~(20000+NPU*1000)
+P_KV_PORT_BASE / D_KV_PORT_BASE             # 建议避开 20000~(20000+NPU*1000)
 P_DP_SIZE / P_DP_SIZE_LOCAL / P_TP_SIZE
 D_DP_SIZE / D_DP_SIZE_LOCAL / D_TP_SIZE
 ```
@@ -385,10 +467,29 @@ export PD_KV_CONNECTOR=MooncakeLayerwiseConnector
 5. **池化关闭时**：不必启动 `mooncake_master`；脚本会提示并跳过。
 6. **硬件变量**：A2/A3 相关导出项可在 `env_common.sh` 中按需打开。
 7. **AISBench**：需预先安装并准备 GSM8K 数据集；`bash run.sh test` 会向当前 Python 环境的 `ais_bench` 配置目录写入临时 case 文件。
+8. **PP 适配**：启用 PP 时需确保 `VISIBLE_DEVICES_LIST` 每 rank 覆盖 TP×PP 张卡。`P_PP_LAYER_PARTITION` 需与模型层数匹配（MiniMax-M2.7 共 62 层 → `"32,30"` 表示 PP0 取 32 层、PP1 取 30 层）。
+9. **additional-config 动态拼装**：不再硬编码 JSON，而是通过 configs.sh 中的布尔开关控制。只有非默认值的字段才会出现在最终 JSON 中，避免冗余配置。
 
 ---
+## 7. backup 脚本参数对照
 
-## 7. 检查清单
+`backup/` 目录中的旧版脚本参数与新 `configs.sh` 体系的对应关系：
+
+| backup 脚本参数 | configs.sh 对应变量 | 说明 |
+|----------------|---------------------|------|
+| `VLLM_ASCEND_ENABLE_FLASHCOMM1=1` | `ENABLE_FLASHCOMM1=1` | 同时控制 env var 和 additional-config |
+| `VLLM_ASCEND_ENABLE_FUSED_MC2=1` | `ENABLE_FUSED_MC2=1` | 同时控制 env var 和 additional-config |
+| `VLLM_PP_LAYER_PARTITION="32,30"` | `P_PP_LAYER_PARTITION="32,30"` | env + kv_connector_extra_config |
+| `VLLM_SERVER_DEV_MODE=1` | `VLLM_SERVER_DEV_MODE=1` | env var |
+| `--pipeline-parallel-size 2` | `P_PP_SIZE=2` | vllm arg |
+| `--compilation-config '{"cudagraph_mode":"FULL_DECODE_ONLY"}'` | `D_CUDAGRAPH_MODE="FULL_DECODE_ONLY"` | 动态生成 |
+| `--speculative_config '{"method":"eagle3",...}'` | `SPECULATIVE_METHOD="eagle3"` + `SPECULATIVE_MODEL_PATH=...` + `*_SPECULATIVE_TOKENS` | 动态生成 |
+| `--additional-config '{...}'` | 各 `ENABLE_*` / `WEIGHT_*` / `*_RECOMPUTE_SCHEDULER` 布尔开关 | 动态拼装 |
+| `--enable-prefix-caching` / `--no-enable-prefix-caching` | `ENABLE_PREFIX_CACHE=1/0` | 已有 |
+| `--enable-expert-parallel` | `ENABLE_EXPERT_PARALLEL=1/0` | 已有 |
+
+---
+## 8. 检查清单
 
 - [ ] 已按场景修改对应 `configs.sh`
 - [ ] `example/common` 已同步到 `/mnt/a800_share/.../common`

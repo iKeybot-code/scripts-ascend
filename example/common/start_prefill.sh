@@ -54,6 +54,7 @@ python "${COMMON_DIR}/launch_online_dp.py" \
     --role prefill \
     --dp-size "${P_DP_SIZE}" \
     --tp-size "${P_TP_SIZE}" \
+    --pp-size "${P_PP_SIZE:-1}" \
     --dp-size-local "${P_DP_SIZE_LOCAL}" \
     --dp-rank-start "${DP_RANK_START}" \
     --dp-address "${P_DP_ADDRESS}" \

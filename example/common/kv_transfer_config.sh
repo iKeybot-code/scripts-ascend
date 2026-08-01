@@ -32,6 +32,26 @@ build_kv_transfer_config() {
             ;;
     esac
 
+    local p_pp_size="${P_PP_SIZE:-1}"
+    local d_pp_size="${D_PP_SIZE:-1}"
+    local p_pp_layer="${P_PP_LAYER_PARTITION:-}"
+    local d_pp_layer="${D_PP_LAYER_PARTITION:-}"
+
+    local pp_prefill_block=""
+    local pp_decode_block=""
+    if [[ "${p_pp_size}" != "1" || -n "${p_pp_layer}" ]]; then
+        pp_prefill_block=",\"pp_size\": ${p_pp_size}"
+        if [[ -n "${p_pp_layer}" ]]; then
+            pp_prefill_block+=",\"pp_layer_partition\": \"${p_pp_layer}\""
+        fi
+    fi
+    if [[ "${d_pp_size}" != "1" || -n "${d_pp_layer}" ]]; then
+        pp_decode_block=",\"pp_size\": ${d_pp_size}"
+        if [[ -n "${d_pp_layer}" ]]; then
+            pp_decode_block+=",\"pp_layer_partition\": \"${d_pp_layer}\""
+        fi
+    fi
+
     local pd_block
     pd_block=$(cat <<EOF
 {
@@ -42,11 +62,11 @@ build_kv_transfer_config() {
   "kv_connector_extra_config": {
     "prefill": {
       "dp_size": ${P_DP_SIZE},
-      "tp_size": ${P_TP_SIZE}
+      "tp_size": ${P_TP_SIZE}${pp_prefill_block}
     },
     "decode": {
       "dp_size": ${D_DP_SIZE},
-      "tp_size": ${D_TP_SIZE}
+      "tp_size": ${D_TP_SIZE}${pp_decode_block}
     }
   }
 }
@@ -68,11 +88,11 @@ EOF
         "kv_connector_extra_config": {
           "prefill": {
             "dp_size": ${P_DP_SIZE},
-            "tp_size": ${P_TP_SIZE}
+            "tp_size": ${P_TP_SIZE}${pp_prefill_block}
           },
           "decode": {
             "dp_size": ${D_DP_SIZE},
-            "tp_size": ${D_TP_SIZE}
+            "tp_size": ${D_TP_SIZE}${pp_decode_block}
           }
         }
       },

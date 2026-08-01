@@ -1,0 +1,45 @@
+/* Giscus 亮色主题 — 适配 Scripts Ascend Wiki 亮色配色 */
+main {
+  --color-prettylights-syntax-comment: #8A8780;
+  --color-prettylights-syntax-constant: #D97757;
+  --color-prettylights-syntax-entity: #1A1A1A;
+  --color-prettylights-syntax-storage-modifier-import: #5C5A54;
+  --color-prettylights-syntax-entity-tag: #D97757;
+  --color-prettylights-syntax-keyword: #D97757;
+  --color-prettylights-syntax-string: #8A8780;
+  --color-prettylights-syntax-variable: #1A1A1A;
+  --color-prettylights-syntax-brackethighlighter-unmatched: #D97757;
+  --color-prettylights-syntax-invalid-illegal-text: #F4F1EA;
+  --color-prettylights-syntax-invalid-illegal-bg: rgba(217, 119, 87, 0.16);
+  --color-prettylights-syntax-carriage-return-text: #F4F1EA;
+  --color-prettylights-syntax-carriage-return-bg: #D97757;
+  --color-prettylights-syntax-string-regexp: #D97757;
+  --color-prettylights-syntax-markup-list: #1A1A1A;
+  --color-prettylights-syntax-markup-heading: #1A1A1A;
+  --color-prettylights-syntax-markup-italic: #5C5A54;
+  --color-prettylights-syntax-markup-bold: #1A1A1A;
+  --color-prettylights-syntax-markup-deleted-text: #D97757;
+  --color-prettylights-syntax-markup-deleted-bg: rgba(217, 119, 87, 0.10);
+  --color-prettylights-syntax-markup-inserted-text: #1A1A1A;
+  --color-prettylights-syntax-markup-inserted-bg: rgba(217, 119, 87, 0.10);
+  --color-prettylights-syntax-markup-changed-text: #5C5A54;
+  --color-prettylights-syntax-markup-changed-bg: rgba(217, 119, 87, 0.10);
+  --color-prettylights-syntax-markup-ignored-text: #5C5A54;
+  --color-prettylights-syntax-markup-ignored-bg: rgba(217, 119, 87, 0.10);
+  --color-prettylights-syntax-meta-diff-range: #D97757;
+  --color-prettylights-syntax-brackethighlighter-angle: #8A8780;
+  --color-prettylights-syntax-sublimelinter-gutter-mark: #C9C4B8;
+  --color-prettylights-syntax-constant-other-reference-link: #D97757;
+  --color-fg-default: #1A1A1A;
+  --color-fg-muted: #5C5A54;
+  --color-fg-subtle: #8A8780;
+  --color-canvas-default: #F4F1EA;
+  --color-canvas-subtle: #EDE9E2;
+  --color-border-default: #C9C4B8;
+  --color-border-muted: #DDD7CB;
+  --color-neutral-muted: rgba(138, 135, 128, 0.20);
+  --color-accent-fg: #D97757;
+  --color-accent-emphasis: #D97757;
+  --color-attention-subtle: rgba(217, 119, 87, 0.10);
+  --color-danger-fg: #D97757;
+}

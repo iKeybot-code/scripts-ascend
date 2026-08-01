@@ -53,6 +53,29 @@ export KV_POOL_BACKEND="${KV_POOL_BACKEND:-mooncake}"
 export KV_LOAD_FAILURE_POLICY="${KV_LOAD_FAILURE_POLICY:-recompute}"
 export KV_POOL_LOOKUP_RPC_PORT="${KV_POOL_LOOKUP_RPC_PORT:-0}"
 export VLLM_USE_V2_MODEL_RUNNER=1
+
+# ----- Optional engine-level switches (env vars) -----
+export ENABLE_FLASHCOMM1="${ENABLE_FLASHCOMM1:-0}"        # VLLM_ASCEND_ENABLE_FLASHCOMM1
+export ENABLE_FUSED_MC2="${ENABLE_FUSED_MC2:-0}"          # VLLM_ASCEND_ENABLE_FUSED_MC2
+export VLLM_SERVER_DEV_MODE="${VLLM_SERVER_DEV_MODE:-0}"
+
+# ----- Additional-config booleans (dynamically built by run_dp_template.sh) -----
+export ENABLE_REDUCE_SAMPLE="${ENABLE_REDUCE_SAMPLE:-0}"
+export ENABLE_CPU_BINDING="${ENABLE_CPU_BINDING:-1}"
+export ENABLE_NPUGRAPH_EX="${ENABLE_NPUGRAPH_EX:-0}"
+export WEIGHT_NZ_MODE="${WEIGHT_NZ_MODE:-0}"
+export P_RECOMPUTE_SCHEDULER="${P_RECOMPUTE_SCHEDULER:-0}"
+export D_RECOMPUTE_SCHEDULER="${D_RECOMPUTE_SCHEDULER:-1}"
+
+# ----- Speculative decoding -----
+export SPECULATIVE_METHOD="${SPECULATIVE_METHOD:-}"                       # e.g. "eagle3"
+export SPECULATIVE_MODEL_PATH="${SPECULATIVE_MODEL_PATH:-}"               # eagle model path
+export P_SPECULATIVE_TOKENS="${P_SPECULATIVE_TOKENS:-1}"                  # Prefill draft tokens
+export D_SPECULATIVE_TOKENS="${D_SPECULATIVE_TOKENS:-3}"                  # Decode draft tokens
+
+# ----- Compilation config -----
+export P_CUDAGRAPH_MODE="${P_CUDAGRAPH_MODE:-}"                           # e.g. "" or "FULL_DECODE_ONLY"
+export D_CUDAGRAPH_MODE="${D_CUDAGRAPH_MODE:-}"                           # e.g. "FULL_DECODE_ONLY"
 # =============================================================================
 
 
@@ -92,6 +115,12 @@ export D_DP_SIZE=2
 export D_TP_SIZE=8
 export D_DP_SIZE_LOCAL=2
 
+# ----- Pipeline Parallel (optional, both default to 1 = disabled) -----
+export P_PP_SIZE="${P_PP_SIZE:-1}"
+export P_PP_LAYER_PARTITION="${P_PP_LAYER_PARTITION:-}"                   # e.g. "32,30"
+export D_PP_SIZE="${D_PP_SIZE:-1}"
+export D_PP_LAYER_PARTITION="${D_PP_LAYER_PARTITION:-}"                   # e.g. "32,30"
+
 # Template devices for ALL nodes of a role (used only when P/D_NODE_VISIBLE_DEVICES empty).
 # Length must be 0(auto) or *_DP_SIZE_LOCAL.
 export P_VISIBLE_DEVICES_LIST=("0,1,2,3,4,5,6,7" "8,9,10,11,12,13,14,15")
@@ -124,6 +153,7 @@ export P_MAX_MODEL_LEN=135000
 export P_MAX_NUM_BATCHED_TOKENS=32768
 export P_GPU_MEMORY_UTILIZATION=0.9
 export P_ENFORCE_EAGER=1
+export P_ASYNC_SCHEDULING="${P_ASYNC_SCHEDULING:-0}"
 export D_MAX_NUM_SEQS=256
 export D_MAX_MODEL_LEN=135000 
 export D_MAX_NUM_BATCHED_TOKENS=32768

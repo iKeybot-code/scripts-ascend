@@ -35,6 +35,15 @@ set_runtime_env() {
     export ASCEND_TRANSFER_TIMEOUT="${ASCEND_TRANSFER_TIMEOUT:-10000}"
     export HCCL_RDMA_TIMEOUT="${HCCL_RDMA_TIMEOUT:-17}"
 
+    # FlashComm1 / Fused MC2 (configs.sh: ENABLE_FLASHCOMM1 / ENABLE_FUSED_MC2)
+    export VLLM_ASCEND_ENABLE_FLASHCOMM1="${ENABLE_FLASHCOMM1:-0}"
+    export VLLM_ASCEND_ENABLE_FUSED_MC2="${ENABLE_FUSED_MC2:-0}"
+
+    # VLLM dev mode (configs.sh: VLLM_SERVER_DEV_MODE)
+    if [[ "${VLLM_SERVER_DEV_MODE:-0}" == "1" ]]; then
+        export VLLM_SERVER_DEV_MODE=1
+    fi
+
     # Optional hardware knobs (uncomment in configs.sh as needed)
     # export ASCEND_ENABLE_USE_FABRIC_MEM=1          # A3 recommended
     # export HCCL_INTRA_ROCE_ENABLE=1                # A2
