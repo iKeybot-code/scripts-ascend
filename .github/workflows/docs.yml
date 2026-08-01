@@ -1,12 +1,12 @@
-name: Deploy Docs
+name: Deploy VuePress Docs
+
 on:
   push:
     branches: [main]
     paths:
       - 'docs/**'
-      - 'mkdocs.yml'
-      - 'requirements.txt'
-      - 'overrides/**'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
 
@@ -23,17 +23,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-node@v4
         with:
-          python-version: '3.12'
+          node-version: 20
+          cache: 'npm'
 
-      - run: pip install -r requirements.txt
+      - run: npm ci
 
-      - run: mkdocs build
+      - run: npm run docs:build
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site/
+          path: docs/.vuepress/dist
 
   deploy:
     needs: build

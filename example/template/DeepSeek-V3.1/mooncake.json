@@ -1,0 +1,9 @@
+{
+    "metadata_server": "P2PHANDSHAKE",
+    "protocol": "ascend",
+    "device_name": "",
+    "master_server_address": "90.90.97.37:50088",
+    "global_segment_size": "1GB",
+    "preferred_segment": false,
+    "prefer_alloc_in_same_node": true
+}

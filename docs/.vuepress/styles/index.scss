@@ -1,0 +1,184 @@
+/* ====================================================================
+   Scripts Ascend Wiki — VuePress 自定义样式
+   配色: #3eaf7c (绿), #2c3e50 (文字), #eaecef (边框)
+   从 MkDocs Material extra.css 迁移适配
+   ==================================================================== */
+
+/* ---------- 字体渲染 ---------- */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Navbar：白底 + 底部细线 ---------- */
+.vp-navbar {
+  border-bottom: 1px solid var(--c-border);
+}
+
+/* ---------- 侧边栏 ---------- */
+.vp-sidebar .vp-sidebar-link {
+  color: var(--c-text-light);
+}
+.vp-sidebar .vp-sidebar-link:hover {
+  color: var(--c-brand);
+}
+.vp-sidebar .vp-sidebar-link.active {
+  color: var(--c-brand);
+  font-weight: 500;
+}
+
+/* ---------- 内容排版 ---------- */
+.vp-doc {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--c-text);
+
+  h1 {
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: var(--c-text);
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-top: 2.5rem;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--c-border);
+    color: var(--c-text);
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    color: var(--c-text);
+  }
+
+  p {
+    margin: 0.75rem 0;
+  }
+
+  /* 分隔线 */
+  hr {
+    border: none;
+    border-top: 1px solid var(--c-border);
+    margin: 2rem 0;
+  }
+
+  /* 内联代码 */
+  code {
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    background: rgba(62, 175, 124, 0.08);
+    color: #2c8a5e;
+    font-size: 0.92em;
+  }
+
+  /* 代码块 */
+  pre code {
+    border-radius: 8px;
+    background: #282c34;
+    color: #e6e6e6;
+    padding: 1.25rem 1.5rem;
+  }
+
+  /* 引用块 */
+  blockquote {
+    border-left: 4px solid var(--c-brand);
+    border-radius: 0 4px 4px 0;
+    background: var(--c-bg-light);
+    color: var(--c-text-light);
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+  }
+
+  /* 链接 */
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* 表格 */
+  table {
+    border-radius: 4px;
+    box-shadow: none;
+    border-collapse: collapse;
+    display: table;
+    width: 100%;
+
+    th {
+      background: var(--c-bg-light);
+      color: var(--c-text);
+      font-weight: 600;
+      border-bottom: 2px solid var(--c-border);
+    }
+
+    td {
+      border-bottom: 1px solid var(--c-border);
+    }
+  }
+}
+
+/* ---------- 图片 ---------- */
+.vp-doc img {
+  border-radius: 6px;
+}
+
+/* ---------- 滚动条 ---------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+}
+
+/* ---------- 页脚 ---------- */
+.vp-footer {
+  color: var(--c-text-lighter);
+  font-size: 0.82rem;
+}
+
+/* ---------- 首页 Hero 微调 ---------- */
+.vp-home .vp-hero-info-wrapper {
+  .vp-hero-name {
+    font-size: 2.2rem;
+    color: var(--c-text);
+  }
+  .vp-hero-tagline {
+    font-size: 1.05rem;
+    color: var(--c-text-light);
+    max-width: 35rem;
+  }
+}
+
+.vp-home .vp-feature-item {
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  transition: border-color 0.2s;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+
+  &:hover {
+    border-color: var(--c-brand);
+  }
+
+  .vp-feature-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--c-text);
+  }
+
+  .vp-feature-details {
+    font-size: 0.9rem;
+    color: var(--c-text-light);
+    line-height: 1.65;
+  }
+}
