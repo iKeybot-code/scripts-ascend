@@ -73,7 +73,7 @@ if [[ "${ROLE}" == "prefill" ]]; then
     MAX_NUM_BATCHED_TOKENS="${P_MAX_NUM_BATCHED_TOKENS}"
     GPU_MEM_UTIL="${P_GPU_MEMORY_UTILIZATION}"
     EXTRA_ARGS=(
-        --additional-config '{"enable_cpu_binding":true,"enable_fused_mc2":0,"enable_prefill_mc2":0}'
+        --additional-config '{"enable_cpu_binding":true,"enable_npugraph_ex": true,"enable_fused_mc2":0,"enable_prefill_mc2":0}'
     )
     if [[ "${P_ENFORCE_EAGER}" == "1" ]]; then
         EXTRA_ARGS+=(--enforce-eager)
@@ -89,7 +89,7 @@ elif [[ "${ROLE}" == "decode" ]]; then
     GPU_MEM_UTIL="${D_GPU_MEMORY_UTILIZATION}"
     EXTRA_ARGS=(
         --compilation-config '{"cudagraph_mode":"FULL_DECODE_ONLY"}'
-        --additional-config '{"recompute_scheduler_enable":true,"enable_cpu_binding":true}'
+        --additional-config '{"recompute_scheduler_enable":true,"enable_cpu_binding":true,"enable_npugraph_ex": true}'
     )
     if [[ "${D_ENFORCE_EAGER:-1}" == "1" ]]; then
         EXTRA_ARGS+=(--enforce-eager)
@@ -114,8 +114,8 @@ if [[ "${IS_QUANTIZATION:-0}" == "1" ]]; then
     EXTRA_ARGS+=(--quantization ascend)
 fi
 
-EXTRA_ARGS=($(printf '%s\n' "${EXTRA_ARGS[@]}" | grep -v '^$'))
-
+readarray -t EXTRA_ARGS < <(printf '%s\n' "${EXTRA_ARGS[@]}" | grep -v '^$')
+  
 KV_TRANSFER_CONFIG="$(build_kv_transfer_config "${KV_ROLE}" "${KV_PORT}")"
 
 # ATTEMPTS_FILE="${COMMON_DIR}/attempts.txt"
