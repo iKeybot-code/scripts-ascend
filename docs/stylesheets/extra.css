@@ -1,135 +1,21 @@
 /* ====================================================================
-   Scripts Ascend Wiki
-   Tech Blue 主题 — 简洁科技风
+   Scripts Ascend Wiki — 基于 MkDocs Material 默认 Indigo 主题
    ==================================================================== */
 @import url('https://cdn.jsdelivr.net/npm/@fontsource-variable/inter/index.css');
 :root {
   --md-text-font-family: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
-  --md-code-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
-/* ---------- 配色：亮色 ---------- */
-[data-md-color-scheme="default"] {
-  --md-primary-fg-color:              #1A56DB;
-  --md-primary-fg-color--light:       #3B82F6;
-  --md-primary-fg-color--dark:        #1E40AF;
-  --md-primary-bg-color:              #FFFFFF;
-  --md-primary-bg-color--light:       #E5E7EB;
-  --md-accent-fg-color:               #2563EB;
-  --md-accent-fg-color--transparent:  rgba(37, 99, 235, 0.10);
-  --md-default-bg-color:              #FFFFFF;
-  --md-default-fg-color:              #1F2937;
-  --md-default-fg-color--light:       #4B5563;
-  --md-default-fg-color--lighter:     #6B7280;
-  --md-default-fg-color--lightest:    #D1D5DB;
-  --md-text-color:                    #1F2937;
-  --md-text-color--light:             #4B5563;
-  --md-typeset-color:                 #1F2937;
-  --md-typeset-a-color:               #2563EB;
-  --md-code-bg-color:                 #F3F4F6;
-  --md-code-fg-color:                 #1F2937;
-  --md-code-hl-color:                 rgba(37, 99, 235, 0.12);
-  --md-footer-bg-color:               #111827;
-  --md-footer-fg-color:               #E5E7EB;
-}
-/* ---------- 配色：暗色 ---------- */
-[data-md-color-scheme="slate"] {
-  --md-hue:                           220deg;
-  --md-primary-fg-color:              #0F172A;
-  --md-primary-fg-color--light:       #1E293B;
-  --md-primary-fg-color--dark:        #020617;
-  --md-primary-bg-color:              #E2E8F0;
-  --md-primary-bg-color--light:       #94A3B8;
-  --md-accent-fg-color:               #60A5FA;
-  --md-accent-fg-color--transparent:  rgba(96, 165, 250, 0.14);
-  --md-default-bg-color:              #0F172A;
-  --md-default-fg-color:              #E2E8F0;
-  --md-default-fg-color--light:       #94A3B8;
-  --md-default-fg-color--lighter:     #64748B;
-  --md-default-fg-color--lightest:    #334155;
-  --md-text-color:                    #E2E8F0;
-  --md-text-color--light:             #94A3B8;
-  --md-typeset-color:                 #E2E8F0;
-  --md-typeset-a-color:               #60A5FA;
-  --md-code-bg-color:                 #1E293B;
-  --md-code-fg-color:                 #E2E8F0;
-  --md-code-hl-color:                 rgba(96, 165, 250, 0.16);
-  --md-footer-bg-color:               #020617;
-  --md-footer-fg-color:               #E2E8F0;
-}
-/* ---------- 字体应用 ---------- */
-body,
-.md-typeset {
-  font-family: var(--md-text-font-family);
+/* ---------- 字体 ---------- */
+body, .md-typeset {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.011em;
-  text-rendering: optimizeLegibility;
 }
-.md-typeset pre > code,
-.md-typeset code,
-.md-typeset kbd {
-  font-family: var(--md-code-font-family);
-}
-/* 标题 */
-.md-typeset h1,
-.md-typeset h2,
-.md-typeset h3,
-.md-typeset h4,
-.md-typeset h5,
-.md-typeset h6 {
-  font-weight: 600;
-  letter-spacing: 0;
-  line-height: 1.25;
-}
-.md-typeset h1 {
-  letter-spacing: -0.01em;
-}
-/* 文档大标题亮色下强制纯黑 */
-[data-md-color-scheme="default"] .md-typeset h1 {
-  color: #000000;
-}
-/* 左侧栏 / 右侧栏 / header 站点名 */
-.md-nav,
-.md-toc,
-.md-tabs,
-.md-header__title,
-.md-header__topic,
-.md-header__ellipsis {
-}
-/* ---------- Header 分隔 ---------- */
-.md-header {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
-  background: var(--md-primary-fg-color);
-}
-/* 隐藏 header logo 占位，站点名顶左对齐 */
+/* ---------- Header ---------- */
 .md-header__button.md-logo {
   display: none;
 }
 .md-header__title {
   margin-left: 0;
-}
-[data-md-color-scheme="slate"] .md-header {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
-}
-[data-md-color-scheme="default"] .md-header__title,
-[data-md-color-scheme="default"] .md-header__button,
-[data-md-color-scheme="default"] .md-header__subject {
-  color: #FFFFFF;
-}
-[data-md-color-scheme="default"] .md-search__input::placeholder {
-  color: #94A3B8;
-}
-/* 搜索框背景 */
-[data-md-color-scheme="default"] .md-search__form {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-[data-md-color-scheme="default"] .md-search__form:hover {
-  background-color: rgba(255, 255, 255, 0.25);
-}
-/* ---------- 链接 hover ---------- */
-.md-typeset a:focus,
-.md-typeset a:hover {
-  color: var(--md-accent-fg-color);
 }
 /* ---------- 12px 统一圆角 ---------- */
 .md-typeset .admonition,
@@ -139,25 +25,19 @@ body,
 .md-typeset pre > code {
   border-radius: 12px;
 }
-.md-button {
-  border-radius: 12px;
-}
 .md-typeset .grid.cards > ul > li,
 .md-typeset .grid > .card {
-  border: 1px solid var(--md-default-fg-color--lightest);
   border-radius: 12px;
   transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 .md-typeset .grid.cards > ul > li:hover,
 .md-typeset .grid > .card:hover {
   border-color: var(--md-accent-fg-color);
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
   transform: translateY(-2px);
 }
 .md-typeset table:not([class]) {
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 0 1px var(--md-default-fg-color--lightest);
 }
 /* inline code */
 .md-typeset code,
@@ -174,20 +54,6 @@ body,
 ::-webkit-scrollbar-thumb {
   background: var(--md-default-fg-color--lighter);
   border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--md-accent-fg-color);
-}
-/* ---------- 侧边栏选中态 ---------- */
-.md-nav__item--active > .md-nav__link {
-  color: var(--md-accent-fg-color);
-}
-/* ---------- 选择高亮 ---------- */
-::selection {
-  background: rgba(37, 99, 235, 0.20);
-}
-[data-md-color-scheme="slate"] ::selection {
-  background: rgba(96, 165, 250, 0.25);
 }
 /* ---------- 文档作者 + 最后修改人 ---------- */
 .doc-authors {
