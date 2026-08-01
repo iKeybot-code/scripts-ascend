@@ -7,12 +7,12 @@ hide:
 
 # Scripts Ascend Wiki
 
-昇腾大模型推理开发脚本与工具集。
+昇腾大模型推理开发脚本与工具集。使用指南、调测复盘、设计方案。
 
 <div class="hero-actions" markdown>
 
-[开始阅读](practice/index.md){ .md-button .md-button--primary }
-[GitHub :fontawesome-brands-github:](https://github.com/iKeybot-code/scripts-ascend){ .md-button }
+[实践指南](practice/index.md){ .md-button .md-button--primary }
+[GitHub](https://github.com/iKeybot-code/scripts-ascend){ .md-button }
 
 </div>
 
@@ -26,9 +26,9 @@ hide:
 
     编译安装、测试拉起、工具使用方法。涵盖 vLLM Ascend 环境搭建与常用脚本。
 
-    <span class="tag-badge">vLLM</span><span class="tag-badge">Ascend</span>
+    <span class="tag-badge">vLLM</span> <span class="tag-badge">Ascend</span>
 
-    [:octicons-arrow-right-24: Read Article](practice/index.md)
+    [Read Article](practice/index.md)
 
 -   2026-07-28
 
@@ -36,9 +36,9 @@ hide:
 
     线上问题定位复盘、环境调试踩坑、精度回归追踪。
 
-    <span class="tag-badge">Debug</span><span class="tag-badge">Tuning</span>
+    <span class="tag-badge">Debug</span> <span class="tag-badge">Tuning</span>
 
-    [:octicons-arrow-right-24: Read Article](debug/index.md)
+    [Read Article](debug/index.md)
 
 -   2026-07-28
 
@@ -46,9 +46,9 @@ hide:
 
     关键模块的源码追踪与方案分析。KVCache 管理、Prefix Cache 等核心机制。
 
-    <span class="tag-badge">Design</span><span class="tag-badge">KVCache</span>
+    <span class="tag-badge">Design</span> <span class="tag-badge">KVCache</span>
 
-    [:octicons-arrow-right-24: Read Article](design/index.md)
+    [Read Article](design/index.md)
 
 </div>
 
@@ -60,4 +60,4 @@ hide:
 
 ## 评论与交流
 
-每页底部已接入 **Giscus** 评论（基于 GitHub Discussions）。欢迎用 GitHub 账号留言交流，评论同步存档至仓库 Discussions。
+每页底部已接入 **Giscus** 评论（基于 GitHub Discussions）。欢迎用 GitHub 账号留言交流。
