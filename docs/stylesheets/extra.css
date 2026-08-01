@@ -80,6 +80,9 @@ body, .md-typeset {
 }
 .md-tabs { display: none; }
 /* 搜索框 */
+.md-search__form {
+  background: transparent;
+}
 .md-search__input {
   background: #fff;
   border: 1px solid var(--panel-border);
@@ -120,13 +123,13 @@ body, .md-typeset {
 }
 /* 侧边栏标题与菜单间距 */
 .md-nav--primary > .md-nav__title {
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.4rem;
+  margin-bottom: 1.50rem;
+  padding-bottom: 0.5rem;
 }
 /* 右侧 TOC 标题间距 */
 .md-nav--secondary > .md-nav__title {
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.3rem;
+  margin-bottom: 1.50rem;
+  padding-bottom: 0.5rem;
 }
 /* 侧边栏链接 */
 .md-nav__link {
@@ -451,8 +454,27 @@ body, .md-typeset {
   background: transparent;
   color: var(--text-muted);
 }
+.md-footer a {
+  color: var(--text-muted);
+}
+.md-footer a:hover {
+  color: var(--accent);
+}
 .md-footer-meta {
   background: transparent;
+  color: var(--text-muted);
+}
+.md-footer-meta__inner {
+  color: var(--text-muted);
+}
+.md-copyright {
+  color: var(--text-muted);
+}
+.md-social__link {
+  color: var(--text-muted);
+}
+.md-social__link:hover {
+  color: var(--accent);
 }
 
 /* ---------- 禁用 TOC 悬浮（让 toc 自然排列） ---------- */
