@@ -7,6 +7,8 @@ on:
       - 'mkdocs.yml'
       - 'requirements.txt'
       - 'overrides/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
