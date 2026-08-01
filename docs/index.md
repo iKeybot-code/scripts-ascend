@@ -7,12 +7,12 @@ hide:
 
 # Scripts Ascend Wiki
 
-昇腾（Ascend）大模型推理开发脚本与工具集 —— 使用指南、调测复盘、设计方案。
+昇腾大模型推理开发脚本与工具集。
 
 <div class="hero-actions" markdown>
 
 [开始阅读](practice/index.md){ .md-button .md-button--primary }
-[GitHub 仓库 :fontawesome-brands-github:](https://github.com/iKeybot-code/scripts-ascend){ .md-button }
+[GitHub :fontawesome-brands-github:](https://github.com/iKeybot-code/scripts-ascend){ .md-button }
 
 </div>
 
@@ -20,29 +20,35 @@ hide:
 
 <div class="grid cards" markdown>
 
--   :material-rocket-launch:{ .lg .middle } **实践指南**
+-   2026-07-28
 
-    ---
+    **实践指南**
 
-    编译安装、测试拉起、工具使用方法
+    编译安装、测试拉起、工具使用方法。涵盖 vLLM Ascend 环境搭建与常用脚本。
 
-    [:octicons-arrow-right-24: 了解更多](practice/index.md)
+    <span class="tag-badge">vLLM</span><span class="tag-badge">Ascend</span>
 
--   :material-bug-check:{ .lg .middle } **调测经验**
+    [:octicons-arrow-right-24: Read Article](practice/index.md)
 
-    ---
+-   2026-07-28
 
-    线上问题定位复盘、环境调试踩坑、精度回归追踪
+    **调测经验**
 
-    [:octicons-arrow-right-24: 了解更多](debug/index.md)
+    线上问题定位复盘、环境调试踩坑、精度回归追踪。
 
--   :material-pencil-ruler:{ .lg .middle } **设计方案**
+    <span class="tag-badge">Debug</span><span class="tag-badge">Tuning</span>
 
-    ---
+    [:octicons-arrow-right-24: Read Article](debug/index.md)
 
-    关键模块的源码追踪与方案分析
+-   2026-07-28
 
-    [:octicons-arrow-right-24: 了解更多](design/index.md)
+    **设计方案**
+
+    关键模块的源码追踪与方案分析。KVCache 管理、Prefix Cache 等核心机制。
+
+    <span class="tag-badge">Design</span><span class="tag-badge">KVCache</span>
+
+    [:octicons-arrow-right-24: Read Article](design/index.md)
 
 </div>
 
@@ -50,8 +56,8 @@ hide:
 
 ## 关于本站
 
-本站由 [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) 构建，托管于 [Read the Docs](https://readthedocs.org) 和 [GitHub Pages](https://ikeybot-code.github.io/scripts-ascend)。文档以 Markdown 编写，源码在 [GitHub](https://github.com/iKeybot-code/scripts-ascend)。
+本站由 [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) 构建，托管于 [Read the Docs](https://readthedocs.org) 和 [GitHub Pages](https://ikeybot-code.github.io/scripts-ascend)。源码在 [GitHub](https://github.com/iKeybot-code/scripts-ascend)。
 
 ## 评论与交流
 
-每页底部接入 **Giscus** 评论系统（基于 GitHub Discussions）。有问题或补充，欢迎用 GitHub 账号在页面下方留言 —— 评论同步存档到仓库的 Discussions，便于追溯。
+每页底部已接入 **Giscus** 评论（基于 GitHub Discussions）。欢迎用 GitHub 账号留言交流，评论同步存档至仓库 Discussions。

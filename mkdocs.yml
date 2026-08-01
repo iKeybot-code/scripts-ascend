@@ -26,8 +26,8 @@ theme:
     - content.action.view
   palette:
     - scheme: default
-      primary: blue grey
-      accent: blue
+      primary: custom
+      accent: indigo
       toggle:
         icon: material/weather-night
         name: 切换暗色模式
