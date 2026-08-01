@@ -1,5 +1,5 @@
 /* ====================================================================
-   Scripts Ascend Wiki — Landing 风格暗色渐变主题
+   Scripts Ascend Wiki — Simple Blog 极简白底风格
    ==================================================================== */
 @import url('https://cdn.jsdelivr.net/npm/@fontsource-variable/inter/index.css');
 
@@ -9,10 +9,7 @@
 }
 
 body {
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.3), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(99, 102, 241, 0.15), transparent);
-  background-attachment: fixed;
+  background: var(--md-default-bg-color);
 }
 
 /* ---------- 字体渲染 ---------- */
@@ -21,105 +18,123 @@ body, .md-typeset {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ---------- Header 精简 ---------- */
+/* ---------- Header：底部细线分隔 ---------- */
 .md-header {
-  background: transparent;
+  background: #fff;
+  color: var(--md-default-fg-color);
   box-shadow: none;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
 }
-.md-header[data-md-state=shadow] {
-  background: var(--md-default-bg-color);
-  box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.1), 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
-  transition: background 0.25s;
+.md-header--shadow {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 .md-header__button.md-logo { display: none; }
 .md-header__title { margin-left: 0; }
 .md-tabs { display: none; }
 
-/* ---------- 侧边栏透明 ---------- */
-.md-sidebar--primary .md-sidebar__scrollwrap {
-  background: transparent;
+/* Header 文字颜色 */
+.md-header__topic,
+.md-header__title[data-md-component="header-title"] .md-header__topic {
+  color: var(--md-default-fg-color);
+  font-weight: 600;
 }
-.md-nav--primary .md-nav__title {
-  background: transparent;
+.md-header__button {
+  color: var(--md-default-fg-color--light);
+}
+.md-header__button:hover {
+  color: var(--md-default-fg-color);
+}
+
+/* ---------- 内容区域 ---------- */
+.md-main__inner {
+  margin-top: 1.5rem;
+}
+.md-content {
+  max-width: 720px;
 }
 
 /* ---------- Hero 区域 ---------- */
 .md-content__inner > h1:first-child {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.2;
-  margin-bottom: 0.3rem;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-bottom: 0.2rem;
   color: var(--md-default-fg-color);
 }
 .md-content__inner > h1:first-child + p {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--md-default-fg-color--light);
-  max-width: 34rem;
-  line-height: 1.65;
-  margin-bottom: 1.2rem;
+  max-width: 32rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
 }
 
 /* ---------- Hero 按钮 ---------- */
 .hero-actions {
-  margin: 0.5rem 0 2rem;
+  margin: 0.3rem 0 1.8rem;
   display: flex;
   gap: 0.6rem;
   flex-wrap: wrap;
 }
 .hero-actions .md-button {
   font-weight: 500;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 .hero-actions .md-button--primary {
-  background: linear-gradient(135deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
-  border: none;
+  background: var(--md-accent-fg-color);
+  border-color: var(--md-accent-fg-color);
   color: #fff;
 }
 .hero-actions .md-button--primary:hover {
-  background: linear-gradient(135deg, var(--md-primary-fg-color--dark), var(--md-accent-fg-color));
+  background: var(--md-primary-fg-color);
+  border-color: var(--md-primary-fg-color);
 }
 
-/* ---------- Section 标题 ---------- */
-.md-typeset h2 {
-  font-size: 1.35rem;
-  font-weight: 600;
-  margin-top: 2.2rem;
-  padding-bottom: 0.3rem;
-  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+/* ---------- 分隔线 ---------- */
+.md-content__inner > hr,
+.md-typeset hr {
+  border: none;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+  margin: 1.8rem 0;
 }
 
-/* ---------- Landing 风卡片 ---------- */
+/* ---------- Blog 风卡片 ---------- */
 .md-typeset .grid.cards > ul {
-  gap: 0.9rem;
+  gap: 0.8rem;
 }
 .md-typeset .grid.cards > ul > li {
   border: 1px solid var(--md-default-fg-color--lightest);
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: none;
-  padding: 1.3rem;
-  background: var(--md-code-bg-color);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  padding: 1.3rem 1.4rem;
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .md-typeset .grid.cards > ul > li:hover {
-  border-color: rgba(99, 102, 241, 0.4);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
-  transform: translateY(-1px);
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
 }
 .md-typeset .grid.cards > ul > li > hr {
   margin: 0.5rem 0;
   border-color: var(--md-default-fg-color--lightest);
-  opacity: 0.4;
+  opacity: 0.6;
+}
+.md-typeset .grid.cards > ul > li > h3 {
+  margin: 0 0 0.15rem;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--md-default-fg-color);
 }
 .md-typeset .grid.cards > ul > li > p {
   margin: 0.2rem 0;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: var(--md-default-fg-color--light);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 .md-typeset .grid.cards > ul > li > p:last-child {
-  margin-top: 0.75rem;
-  font-size: 0.82rem;
+  margin-top: 0.7rem;
+  font-size: 0.8rem;
 }
 .md-typeset .grid.cards > ul > li > p:last-child a {
   color: var(--md-accent-fg-color);
@@ -129,39 +144,55 @@ body, .md-typeset {
 .md-typeset .grid.cards > ul > li > p:last-child a:hover {
   text-decoration: underline;
 }
-.md-typeset .grid.cards > ul > li > h3 {
-  margin: 0 0 0.15rem;
-  font-size: 1rem;
+
+/* ---------- 日期徽章 ---------- */
+.page-date-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  color: var(--md-default-fg-color--light);
+  background: var(--md-default-fg-color--lightest);
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-bottom: 1rem;
+}
+
+/* ---------- Section 标题 ---------- */
+.md-typeset h2 {
+  font-size: 1.2rem;
   font-weight: 600;
+  margin-top: 2rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color);
 }
 
 /* ---------- 通用圆角 ---------- */
 .md-typeset .admonition,
 .md-typeset details {
-  border-radius: 10px;
+  border-radius: 8px;
 }
 .md-typeset pre > code {
-  border-radius: 10px;
+  border-radius: 8px;
 }
 .md-typeset table:not([class]) {
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
 }
 .md-typeset code,
 .md-typeset kbd {
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 /* ---------- 滚动条 ---------- */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.08) transparent;
+  scrollbar-color: var(--md-default-fg-color--lightest) transparent;
 }
-::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.08);
-  border-radius: 5px;
+  background: var(--md-default-fg-color--lightest);
+  border-radius: 4px;
 }
 
 /* ---------- 文档作者 ---------- */
@@ -169,20 +200,22 @@ body, .md-typeset {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin: -0.3rem 0 1.2rem;
-  font-size: 0.64rem;
+  margin: 1.5rem 0 0.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+  font-size: 0.72rem;
   color: var(--md-default-fg-color--light);
   flex-wrap: wrap;
 }
 .doc-authors__label { color: var(--md-default-fg-color--lighter); }
 .doc-authors__avatar img {
-  width: 21px; height: 21px;
+  width: 22px; height: 22px;
   border-radius: 50%;
   vertical-align: middle;
   border: 1px solid var(--md-default-fg-color--lightest);
   transition: border-color .2s;
 }
 .doc-authors__avatar:hover img { border-color: var(--md-accent-fg-color); }
-.doc-authors__name { font-weight: 500; color: var(--md-default-fg-color--light); }
+.doc-authors__name { font-weight: 500; color: var(--md-default-fg-color); }
 .doc-authors__sep { color: var(--md-default-fg-color--lightest); }
 .doc-authors__date { margin-left: 2px; }
