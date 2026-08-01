@@ -30,6 +30,12 @@
 
   --md-code-bg-color: #152238;
   --md-code-fg-color: #f3f7fb;
+
+  --md-footer-bg-color: transparent;
+  --md-footer-bg-color--dark: transparent;
+  --md-footer-fg-color: var(--text-muted);
+  --md-footer-fg-color--light: var(--text-muted);
+  --md-footer-fg-color--lighter: #8a92a0;
 }
 
 /* ---------- 背景渐变（与源码一致） ---------- */
