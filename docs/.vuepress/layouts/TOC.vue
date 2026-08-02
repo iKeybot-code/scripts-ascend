@@ -1,21 +1,23 @@
 <script setup lang="ts">
+import type { PageHeader } from 'vuepress'
 import { computed } from 'vue'
-import { usePageData } from 'vuepress/client'
 
-const page = usePageData()
+const props = defineProps<{
+  headers: PageHeader[]
+}>()
 
-const headers = computed(() => {
-  if (!page.value?.headers) return []
-  return page.value.headers.filter(h => h.level === 2 || h.level === 3)
+const items = computed(() => {
+  if (!props.headers) return []
+  return props.headers.filter(h => h.level === 2 || h.level === 3)
 })
 </script>
 
 <template>
-  <nav v-if="headers.length > 0" class="toc-sidebar">
+  <nav class="toc-sidebar">
     <h3 class="toc-title">目录</h3>
-    <ul class="toc-list">
+    <ul v-if="items.length > 0" class="toc-list">
       <li
-        v-for="header in headers"
+        v-for="header in items"
         :key="header.slug"
         :class="['toc-item', `toc-level-${header.level}`]"
       >
