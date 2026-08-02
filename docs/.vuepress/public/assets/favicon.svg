@@ -6,6 +6,5 @@
     </linearGradient>
   </defs>
   <rect width="48" height="48" rx="10" fill="url(#bg)"/>
-  <path d="M14 32 L24 14 L34 32" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <line x1="20" y1="27" x2="28" y2="27" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M42.166 40.97h-9.372V5.023h9.372zm-14.313 0h-6.65V5.023h6.65zm-11.056 0H11.7V5.023h5.098zm-9.317 0H3.833V5.023H7.48z" fill="#fff"/>
 </svg>
