@@ -138,7 +138,7 @@ const onBeforeLeave = scrollPromise.pending
               <slot name="page-bottom" />
             </template>
           </VPPage>
-          <TOC :headers="page.headers" />
+          <TOC />
         </div>
       </VPFadeSlideYTransition>
     </slot>

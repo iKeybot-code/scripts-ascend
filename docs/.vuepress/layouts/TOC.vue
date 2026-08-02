@@ -1,14 +1,27 @@
 <script setup lang="ts">
-import type { PageHeader } from 'vuepress'
-import { computed } from 'vue'
+import { ref, onMounted } from 'vue'
 
-const props = defineProps<{
-  headers: PageHeader[]
-}>()
+interface TocItem {
+  id: string
+  title: string
+  level: number
+}
 
-const items = computed(() => {
-  if (!props.headers) return []
-  return props.headers.filter(h => h.level === 2 || h.level === 3)
+const items = ref<TocItem[]>([])
+
+function extractToc(): TocItem[] {
+  const content = document.querySelector('.vp-doc [vp-content]') ?? document.querySelector('.vp-page')
+  if (!content) return []
+  const headings = content.querySelectorAll('h2, h3')
+  return Array.from(headings).map(h => ({
+    id: h.id,
+    title: h.textContent || '',
+    level: Number(h.tagName.charAt(1)),
+  }))
+}
+
+onMounted(() => {
+  items.value = extractToc()
 })
 </script>
 
@@ -17,11 +30,11 @@ const items = computed(() => {
     <h3 class="toc-title">目录</h3>
     <ul v-if="items.length > 0" class="toc-list">
       <li
-        v-for="header in items"
-        :key="header.slug"
-        :class="['toc-item', `toc-level-${header.level}`]"
+        v-for="item in items"
+        :key="item.id"
+        :class="['toc-item', `toc-level-${item.level}`]"
       >
-        <a :href="`#${header.slug}`" class="toc-link">{{ header.title }}</a>
+        <a :href="`#${item.id}`" class="toc-link">{{ item.title }}</a>
       </li>
     </ul>
   </nav>
