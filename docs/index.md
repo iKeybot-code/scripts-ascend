@@ -1,7 +1,7 @@
 ---
 home: true
 comments: false
-heroText: Scripts Ascend Wiki
+heroText: 昇腾推理脚本工具集
 tagline: 昇腾大模型推理开发脚本与工具集。使用指南、调测复盘、设计方案。
 actions:
   - text: 快速开始
