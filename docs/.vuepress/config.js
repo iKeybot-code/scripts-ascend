@@ -34,7 +34,26 @@ export default defineUserConfig({
 
     sidebar: {
       '/practice/': ['/practice/'],
-      '/debug/': ['/debug/'],
+      '/debug/': [
+        '/debug/',
+        {
+          text: 'DeepSeek V3.1',
+          children: ['/debug/deepseek_v31_2p1d_mrv2_report'],
+        },
+        {
+          text: 'MiniMax M2.7',
+          children: [
+            '/debug/minimax_m27_full_report',
+            '/debug/minimax_m27_mrv2_pd_pool_final',
+            '/debug/minimax_m27_mrv2_pd_pool_report',
+            '/debug/minimax_m27_pd_pool_report',
+            '/debug/task_report_minimax_m27_pd_20260727',
+            '/debug/MiniMax-M2.7_PD_MRV2_测评报告',
+            '/debug/eval_report_20250729',
+            '/debug/report_MiniMax_M2.7_MRV2_PD_AIME2025',
+          ],
+        },
+      ],
       '/design/': ['/design/'],
     },
   }),
