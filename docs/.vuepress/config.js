@@ -19,7 +19,7 @@ export default defineUserConfig({
   ],
 
   theme: defaultTheme({
-    logo: '/scripts-ascend/assets/logo.svg',
+    logo: '/assets/logo.svg',
     repo: 'https://github.com/iKeybot-code/scripts-ascend',
     editLink: false,
     lastUpdated: false,
