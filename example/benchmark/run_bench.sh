@@ -326,6 +326,9 @@ fi
     echo "models[0]['path'] = '${MODEL_PATH}'"
     echo "models[0]['max_out_len'] = ${MAX_OUT_LEN}"
     echo "models[0]['batch_size'] = ${BATCH_SIZE}"
+    echo "models[0]['stream'] = True"
+    echo "models[0]['retry'] = 3"
+    echo "models[0]['request_rate'] = 1"
     echo "models[0]['generation_kwargs']['temperature'] = ${TEMPERATURE}"
 } >> "${TARGET_MODEL_DIR}/${MODEL_CASE_KEY}.py"
 

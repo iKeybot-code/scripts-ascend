@@ -8,8 +8,9 @@ models = [
         abbr="vllm-api-bench",
         path="PLACEHOLDER_PATH",
         model="PLACEHOLDER_MODEL",
-        request_rate=0,
-        retry=2,
+        request_rate=1,
+        retry=3,
+        stream=True,
         host_ip="127.0.0.1",
         host_port=8000,
         max_out_len=32768,
@@ -17,10 +18,7 @@ models = [
         trust_remote_code=False,
         generation_kwargs=dict(
             temperature=0.0,
-            top_k=10,
-            top_p=0.95,
             seed=None,
-            repetition_penalty=1.03,
         ),
         pred_postprocessor=dict(type=extract_non_reasoning_content),
     )
