@@ -10,7 +10,7 @@ import time
 from datetime import datetime, timezone
 
 BASE = "/mnt/a800_share/l00848175/workspace/tests/minimax_m27_1p1d_mrv2"
-RUN_TAG = os.environ.get("AIME_RUN_TAG", "aime2026_aisbench_v6")
+RUN_TAG = os.environ.get("AIME_RUN_TAG", "aime2026_aisbench_v7")
 FINAL_GLOB = f"{BASE}/outputs/{RUN_TAG}/*/predictions/vllm-api-bench/aime2026.jsonl"
 TMP_GLOB = f"{BASE}/outputs/{RUN_TAG}/*/predictions/vllm-api-bench/tmp/*.jsonl"
 DATASET = "/mnt/a800_share/l00848175/workspace/benchmark/ais_bench/datasets/aime2026/aime2026.jsonl"
