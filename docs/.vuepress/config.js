@@ -15,7 +15,7 @@ export default defineUserConfig({
   description: '昇腾推理开发脚本与工具集 Wiki',
 
   head: [
-    ['link', { rel: 'icon', href: '/scripts-ascend/assets/favicon.svg' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/scripts-ascend/assets/favicon.svg' }],
   ],
 
   theme: defaultTheme({

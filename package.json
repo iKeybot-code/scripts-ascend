@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs && node -e \"require('fs').copyFileSync('docs/.vuepress/dist/index.html', 'docs/.vuepress/dist/404.html')\""
   },
   "devDependencies": {
     "@vuepress/bundler-vite": "^2.0.0-rc.31",
