@@ -64,15 +64,26 @@ def normalize_answer(ans):
         return ans
 
 
+def find_latest_exp_dir():
+    exp_dirs = sorted(glob.glob(f"{BASE}/outputs/{RUN_TAG}/20*"))
+    return exp_dirs[-1] if exp_dirs else None
+
+
 def find_pred_files():
-    final = sorted(glob.glob(FINAL_GLOB))
-    tmp = sorted(glob.glob(TMP_GLOB))
-    return (final[-1] if final else None), (tmp[-1] if tmp else None)
+    exp = find_latest_exp_dir()
+    if not exp:
+        return None, None
+    final = os.path.join(exp, "predictions/vllm-api-bench/aime2026.jsonl")
+    tmp_files = sorted(glob.glob(os.path.join(exp, "predictions/vllm-api-bench/tmp/*.jsonl")))
+    tmp = tmp_files[-1] if tmp_files else None
+    final = final if os.path.exists(final) else None
+    return final, tmp
 
 
 def read_predictions(final_path, tmp_path):
     rows = []
-    for path in (final_path, tmp_path):
+    # Prefer tmp (active infer); ignore stale final from same run until infer done
+    for path in (tmp_path, final_path):
         if not path or not os.path.exists(path):
             continue
         with open(path, encoding="utf-8") as f:
@@ -162,6 +173,10 @@ def main():
             correct, details = score_rows(rows, gold)
             acc = 100.0 * correct / n if n else 0.0
             last = details[-1]
+            empty = sum(1 for r in rows if not (r.get("prediction") or "").strip())
+            if empty >= 3 and n <= 5:
+                log(f"CRITICAL {empty}/{n} empty predictions (likely PD failure)")
+                return 4
             log(
                 f"Q{n}/{total} done | running acc {correct}/{n} = {acc:.2f}% | "
                 f"last id={last[0]} pred={last[1]} gold={last[2]} ok={last[3]}"
