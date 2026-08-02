@@ -33,24 +33,9 @@ export default defineUserConfig({
     ],
 
     sidebar: {
-      '/practice/': [
-        {
-          text: '实践指南',
-          children: ['/practice/'],
-        },
-      ],
-      '/debug/': [
-        {
-          text: '调测经验',
-          children: ['/debug/'],
-        },
-      ],
-      '/design/': [
-        {
-          text: '设计方案',
-          children: ['/design/'],
-        },
-      ],
+      '/practice/': ['/practice/'],
+      '/debug/': ['/debug/'],
+      '/design/': ['/design/'],
     },
   }),
 
