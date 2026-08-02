@@ -11,12 +11,12 @@ actions:
     link: https://github.com/iKeybot-code/scripts-ascend
     type: secondary
 features:
+  - title: 设计方案
+    details: 关键模块的源码追踪与方案分析。KVCache 管理、Prefix Cache 等核心机制。
   - title: 实践指南
     details: 编译安装、测试拉起、工具使用方法。涵盖 vLLM Ascend 环境搭建与常用脚本。
   - title: 调测经验
     details: 线上问题定位复盘、环境调试踩坑、精度回归追踪。
-  - title: 设计方案
-    details: 关键模块的源码追踪与方案分析。KVCache 管理、Prefix Cache 等核心机制。
 footer: Copyright © iKeybot
 ---
 
