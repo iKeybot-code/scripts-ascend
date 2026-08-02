@@ -1,7 +1,7 @@
 {
   "name": "scripts-ascend",
   "version": "1.0.0",
-  "description": "昇腾推理开发脚本与工具集 Wiki",
+  "description": "昇腾推理开发脚本与工具集 Wiki - VuePress",
   "private": true,
   "scripts": {
     "docs:dev": "vuepress dev docs",
