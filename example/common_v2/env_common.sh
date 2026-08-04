@@ -19,7 +19,10 @@ set_network_env() {
 }
 
 set_runtime_env() {
-    export HCCL_EXEC_TIMEOUT="${HCCL_EXEC_TIMEOUT:-600}"
+    # HCCL_EXEC_TIMEOUT raised (1800s) to tolerate cross-node decode startup
+    # skew: node .48 model-loads ~3min later than .44, so first-inference
+    # AllGather would otherwise hit the 600s default timeout and kill rank0.
+    export HCCL_EXEC_TIMEOUT="${HCCL_EXEC_TIMEOUT:-1800}"
     export HCCL_CONNECT_TIMEOUT="${HCCL_CONNECT_TIMEOUT:-360}"
     export HCCL_BUFFSIZE="${HCCL_BUFFSIZE:-1024}"
     export HCCL_DETERMINISTIC="${HCCL_DETERMINISTIC:-true}"
@@ -30,6 +33,11 @@ set_runtime_env() {
     export TASK_QUEUE_ENABLE="${TASK_QUEUE_ENABLE:-1}"
     export MC_LOG_LEVEL="${MC_LOG_LEVEL:-ERROR}"
     export PYTHONHASHSEED="${PYTHONHASHSEED:-0}"
+    # Official DeepSeek-V3.1 PD guide values: tolerate NPU graph compile + slow
+    # DP-rank model startup on first inference (sample_tokens RPC used to time
+    # out at the 300s default, crashing decode workers).
+    export VLLM_RPC_TIMEOUT="${VLLM_RPC_TIMEOUT:-3600000}"
+    export VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS="${VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS:-30000}"
     export ASCEND_BUFFER_POOL="${ASCEND_BUFFER_POOL:-0:0}"
     export ASCEND_CONNECT_TIMEOUT="${ASCEND_CONNECT_TIMEOUT:-10000}"
     export ASCEND_TRANSFER_TIMEOUT="${ASCEND_TRANSFER_TIMEOUT:-10000}"
@@ -42,6 +50,19 @@ set_runtime_env() {
     # VLLM dev mode (configs.sh: VLLM_SERVER_DEV_MODE)
     if [[ "${VLLM_SERVER_DEV_MODE:-0}" == "1" ]]; then
         export VLLM_SERVER_DEV_MODE=1
+    fi
+
+    # LD_PRELOAD libjemalloc to avoid Mooncake glibc heap corruption
+    # ("corrupted size vs. prev_size") under high-concurrency KV pool access.
+    if [[ -z "${LD_PRELOAD:-}" ]]; then
+        for _je in /usr/lib/aarch64-linux-gnu/libjemalloc.so.2 \
+            /usr/lib/x86_64-linux-gnu/libjemalloc.so.2 \
+            /lib/aarch64-linux-gnu/libjemalloc.so.2 /lib64/libjemalloc.so.2; do
+            if [[ -f "${_je}" ]]; then
+                export LD_PRELOAD="${_je}"
+                break
+            fi
+        done
     fi
 
     # Optional hardware knobs (uncomment in configs.sh as needed)
