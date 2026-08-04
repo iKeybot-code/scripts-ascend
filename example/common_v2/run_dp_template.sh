@@ -104,7 +104,10 @@ elif [[ "${ROLE}" == "decode" ]]; then
     MAX_NUM_BATCHED_TOKENS="${D_MAX_NUM_BATCHED_TOKENS:?D_MAX_NUM_BATCHED_TOKENS required}"
     GPU_MEM_UTIL="${D_GPU_MEMORY_UTILIZATION:?D_GPU_MEMORY_UTILIZATION required}"
     [[ "${D_ENFORCE_EAGER:-0}" == "1" ]] && EXTRA_ARGS+=(--enforce-eager)
-    [[ "${D_ASYNC_SCHEDULING:-0}" == "1" ]] && EXTRA_ARGS+=(--async-scheduling)
+    # Official DeepSeek-V3.1 PD decode config does NOT use async scheduling.
+    # D_ASYNC_SCHEDULING=0 (default) => pass --no-async-scheduling explicitly,
+    # otherwise vllm auto-enables async scheduling and desyncs DP ranks.
+    [[ "${D_ASYNC_SCHEDULING:-0}" != "1" ]] && EXTRA_ARGS+=(--no-async-scheduling)
 else
     echo "[run_dp_template] unknown role: ${ROLE}" >&2
     exit 1
