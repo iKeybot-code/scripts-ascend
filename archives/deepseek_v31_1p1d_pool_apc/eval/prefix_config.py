@@ -1,0 +1,10 @@
+DATASET_PATH = "/mnt/share/l00848175/eval_results/prefix/datasets"
+WORK_PATH = "/mnt/share/l00848175/eval_tools/benchmark"
+MODEL_NAME = "deepseek_v3"
+MODEL_PATH = "/mnt/weight/DeepSeek-V3.1-w4a8-mtp-QuaRot"
+HOST_IP = "192.168.13.165"
+HOST_PORT = "9000"
+API_KEY = ""
+DEFAULT_PERFORMANCE_TEST = "default_perf"
+OUTPUT_DIR = "/mnt/share/l00848175/eval_results/prefix/outputs_valid"
+POD_INFO = ["192.168.13.165:8000", "192.168.13.165:8001"]
