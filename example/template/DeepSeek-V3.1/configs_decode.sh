@@ -13,8 +13,8 @@ export D_MAX_NUM_SEQS=28
 export D_MAX_MODEL_LEN=65536
 export D_MAX_NUM_BATCHED_TOKENS=256
 export D_GPU_MEMORY_UTILIZATION=0.92
-# export D_ENFORCE_EAGER=1
-export D_ENFORCE_EAGER=0
+export D_ENFORCE_EAGER=1
+# export D_ENFORCE_EAGER=0
 export D_ASYNC_SCHEDULING=1
 
 # Decode engine env switches (plain export; comment to leave default/off)
@@ -33,7 +33,7 @@ export ADDITIONAL_CONFIG='{"recompute_scheduler_enable": true, "multistream_over
 # export ADDITIONAL_CONFIG='{"recompute_scheduler_enable": true}'
 
 # --speculative_config
-export SPECULATIVE_CONFIG='{"num_speculative_tokens": 1, "method": "mtp"}'
+export SPECULATIVE_CONFIG='{"num_speculative_tokens": 1, "method": "mtp", "enforce_eager": true}'
 
 # --compilation-config
 export COMPILATION_CONFIG='{"cudagraph_mode": "FULL_DECODE_ONLY"}'
