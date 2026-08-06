@@ -1,0 +1,59 @@
+1
+(EngineCore pid=249509) [patch_kv_cache_coordinator] hash_block_size=256, group_block_sizes=[256, 256, 4, 256, 256,
+256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+256, 256, 256, 256, 256, 256, 256, 256, 256], group-effective_block_sizes=[1024, 256, 4, 256, 256, 256, 256, 256l
+256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256,
+256, 256, 256, 256, 256, 256]
+2
+(EngineCore pid=249509) [patch_kv_cache_coordinator] kv_cache_groups=[KVCacheGroupSpec(layer_names=['model.layers.3.
+ self-attn.indexer.k_cache', 'model.layers.7.self_attn.indexer.k_cache', 'model.layers.11.self_attn.indexer.k_cache',
+'model.layers.15.self-attn.indexer.k_cache', 'model.layers.19.self_-attn.indexer.k_cache', 'model.layers.23.self-attn.
+indexer.k_cache', 'model.layers.27.self_-attn.indexer.k_cache', 'model.layers.31.self_attn.indexer.k_cache', 'model.
+layers.35.self_attn.indexer.k_cache', 'model.layers.39.self_attn.indexer.k_cache', 'model.layers.43.self_attn.
+indexer.k_cache'], kv_cache_spec=MLAAttentionSpec(block_size=256, num_kv_heads=1, head_size=128, dtype=torch.
+bfloat16, kv_quant_mode=<KVQuantMode.NONE: 0>, page_size_padded=None, head_size_v=128, sliding_window=None, 
+ attention_chunk_size=None, cache_dtype_str=None, alignment=None, compres_ratio=4, model_version='glm5_next'),
+is_eagle_group=False), KVCacheGroupSpec(layer_names=['model.layers.3.self-attn.attn', 'model.layers.7.sef-attn.
+attn', 'model.layers.11.self-attn.attn', 'model.layers.15.self -attn.attn', 'model.layers.19.self-attn.attn', 'model.
+layers.23.self-attn.attn', 'model.layers.27.self_attn.attn', 'model.layers.31.self-attn.attn', 'model.layers.35.
+ self_attn.attn', 'model.layers.39.self_attn.attn', 'model.layers.43.self_attn.attn'], kv_cache_spec=MLAAttentionSpec 
+(block_size=256, num_kv_heads=1, head_size=512, dtype=torch.bfloat16, kv_quant_mode=<KVQuantMode.NONE: 0>,
+ page_size_padded=None, head_size_v=512, sliding_window=None, attention_chunk_size=None, cache_dtype_str=None,
+alignment=None, compress_ratio=1, model_version='glm5_next'), is_eagle_group=False), KVCacheGroupSpec(layer_names= 
+['model.layers.3.self_attn.indexer.compressor.state_cache', 'model.layers.7.self-attn.indexer.compressor.
+ state_cache', 'model.layers.11.self_attn.indexer.compressor.state_cache', 'model.layers.15.self_attn.indexer.
+compressor.state_cache', 'model.layers.19.self-attn.indexer.compressor.state_cache', 'model.layers.23.self-attn.
+indexer.compressor.state_cache', 'model.layers.27.self_-attn.indexer.compressor.state_cache', 'model.layers.31.
+ self-attn.indexer.compressor.state_cache', 'model.layers.35.self_attn.indexer.compressor.state_cache', 'model.layers.
+39.self_-attn.indexer.compressor.state_cache', 'model.layers.43.self-attn.indexer.compressor.state_cache'],
+kv_cache_spec=AscendIndexerKPoolStateSpec(block_size=4, num_kv_heads=1, head_size=256, dtype=torch.bfloat16, 
+kv_quant_mode=<KVQuantMode.NONE: 0>, page_size_padded=None, sliding_window=4, head_size_v=None,
+cache_dtype_str=None, alignment=None, compress_ratio=1, model_version='glm5_next', cache_role='indexer_state'),
+is_eagle_group=False), KVCacheGroupSpec(layer_names=['model.layers.0.self_-attn'], kv_cache_spec=Mambaspec 
+(block_size=256, shapes=((3, 1536), (4, 128, 128)), dtypes=(torch.bfloat16, torch.float32), page_size_padded=271360,
+ mamba_type=<MambaAttentionBackendEnum.GDN_ATTN: 'vllm.v1.attention.backends. gdn-attn.GDNAttentionBackend'>,
+mamba_cache_mode='align', num_speculative_blocks=0), is_eagle_group=False), KVCacheGroupSpec(layer_names=['model.
+layers.1.self-attn'], kv_cache_spec=MambaSpec(block_size=256, shapes=(3, 1536), (4, 128, 128), dtypes=(torch.
+bfloat16, torch.float32), page_size_padded=271360, mamba_type=<MambaAttentionBackendEnum.GDN_ATTN: 'vllm.v1.
+ attention.backends.gdn_attn.GDNAttentionBackend'>, mamba_cache_mode='align', num_speculative_blocks=0),
+is_eagle_group=False), KVCacheGroupSpec(layer_names=['model.layers.2.self-attn'], kv_cache_spec=MambaSpec 
+(block_size=256, shapes=((3, 1536), (4, 128, 128)), dtypes=(torch.bfloat16, torch.float32), page_size_padded=271360,
+ mamba_type=<MambaAttentionBackendEnum.GDN_ATTN: 'vllm.v1.attention.backends. gdn-attn.GDNAttentionBackend'>,
+ mamba_cache_mode='align', num_speculative_blocks=0), is-eagle_group=False), KVCacheGroupSpec(layer_names=['model.
+layers.4.self-attn'], kv_cache_spec=Mambaspec(block_size=256, shapes=((3, 1536), (4, 128, 128), dtypes=(torch.
+bfloat16, torch.float32), page_size_paded=271360, mamba_type=<MambaAttentionBackendEnum.GDN_ATTN: 'vllm.v1.
+ attention.backends.gdn_attn.GDNAttentionBackend'>, mamba_cache_mode='align', num_speculative_blocks=0),
+is_eagle_group=False), KVCacheGroupSpec(layer_names=['model.layers.5.self-attn'], kv_cache_spec=MambaSpec 
+(block_size=256, shapes=((3, 1536), (4, 128, 128)), dtypes=(torch.bfloat16, torch.float32), page_size_padded=271360,
+ mamba_type=<MambaAttentionBackendEnum.GDN_ATTN: 'vlm.v1.attention.backends.gdn_attn.GDNAttentionBackend'>,
+mamba_cache_mode=align', num_speculative_blocks=0), is_eagle_group=False), KVCacheGroupSpec(layer_names=['model.
+layers.6.self_attn'], kv_cache_spec=MambaSpec(block_size=256, shapes=((3, 1536), (4, 128, 128)), dtypes=(torch.
+bfloat16, torch.float32), page_size_padded=271360, mamba_type=<MambaAttentionBackendEnum.GDN_ATTN: 'vllm.v1.
+ attention.backends.gdn_attn.GDNAttentionBackend'>, mamba_cache_mode='align', num_speculative_blocks=), 
+is_eagle_group=False), KVCacheGroupSpec(layer_names=['model.layers.8.self_attn'], kv_cache_spec=MambaSpec 
+(block_size=256, shapes=(3, 1536), (4, 128, 128), dtypes=(torch.bfloat16, torch.float32), page_size_padded=271360,
+mamba_type=<MambaAttentionBackendEnum.GDN_ATTN: 'vllm.v1.attention.backends. gdn_attn.GDNAttentionBackend'>, 
+ mamba_cache_mode='align', num_speculative_blocks=0), is_eagle_group=False), KVCacheGroupSpec(layer_names=['model.
+layers.9.self-attn'], kv_cache_spec=Mambaspec(block_size=256, shapes=((3, 1536), (4, 128, 128)), dtypes=(torch.
+bfloat16, torch.float32), page_size_paded=271360, mamba_type=<MambaAttentionBackendEnum.GDN_ATTN: 'vllm.v1.
+ attention.backends.gdn_attn.GDNAttentionBackend'>, mamba_cache_mode='align', num_speculative_blocks=0), 

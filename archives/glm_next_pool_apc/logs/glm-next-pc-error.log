@@ -1,0 +1,31 @@
+打开prefix cache后，报错
+报错(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195] EngineCore failed to start.
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195] Traceback (most recent call last):
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/engine/core.py", line 1164, in run_engine_core
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]     return func(*args, **kwargs)
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/engine/core.py", line 930, in __init__
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]     super().__init__(
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/engine/core.py", line 149, in __init__
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]     self.scheduler: SchedulerInterface = Scheduler(
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]                                          ^^^^^^^^^^
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/core/sched/async_scheduler.py", line 14, in __init__
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]     super().__init__(*args, **kwargs)
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]   File "/home/wyzhou/vllm-ascend-glm-next-private/vllm_ascend/patch/platform/patch_balance_schedule.py", line 61, in __init__
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]     super().__init__(
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/core/sched/scheduler.py", line 231, in __init__
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]     self.kv_cache_manager = KVCacheManager(
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]                             ^^^^^^^^^^^^^^^
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/core/kv_cache_manager.py", line 142, in __init__
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]     self.coordinator = get_kv_cache_coordinator(
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]   File "/home/wyzhou/vllm-ascend-glm-next-private/vllm_ascend/patch/platform/patch_kv_cache_coordinator.py", line 502, in get_kv_cache_coordinator
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]     return AscendHybridKVCacheCoordinator(
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]   File "/home/wyzhou/vllm-ascend-glm-next-private/vllm_ascend/patch/platform/patch_kv_cache_coordinator.py", line 144, in __init__
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]     assert all(
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195]            ^^^^
+(EngineCore pid=156780) ERROR 07-30 18:11:56 [core.py:1195] AssertionError: block_size must be divisible by hash_block_size

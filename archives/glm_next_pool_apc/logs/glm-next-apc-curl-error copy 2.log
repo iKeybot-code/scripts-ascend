@@ -1,0 +1,51 @@
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197] EngineCore encountered a fatal error.
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197] Traceback (most recent call last):
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/engine/core.py", line 1188, in run_engine_core
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]     engine_core.run_busy_loop()
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/engine/core.py", line 1229, in run_busy_loop
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]     self._process_engine_step()
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/engine/core.py", line 1268, in _process_engine_step
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]     outputs, model_executed = self.step_fn()
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]                               ^^^^^^^^^^^^^^
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/engine/core.py", line 512, in step_with_batch_queue
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]     scheduler_output = self.scheduler.schedule()
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]   File "/home/wyzhou/vllm-ascend-glm-next-private/vllm_ascend/patch/platform/patch_balance_schedule.py", line 87, in schedule
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]     return super().schedule()
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]            ^^^^^^^^^^^^^^^^^^
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/core/sched/scheduler.py", line 612, in schedule
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]     self.kv_cache_manager.get_computed_blocks(request)
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/core/kv_cache_manager.py", line 223, in get_computed_blocks
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]     self.coordinator.find_longest_cache_hit(
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]   File "/home/wyzhou/vllm-ascend-glm-next-private/vllm_ascend/patch/platform/patch_kv_cache_coordinator.py", line 356, in find_longest_cache_hit
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]     hit_blocks = manager_cls.find_longest_cache_hit(
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/core/single_type_kv_cache_manager.py", line 640, in find_longest_cache_hit
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]     block_hashes[i], kv_cache_group_ids
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197]     ~~~~~~~~~~~~^^^
+(EngineCore pid=264927) ERROR 07-30 23:42:44 [core.py:1197] IndexError: list index out of range
+(Worker_TP0_EP0 pid=264954) INFO 07-30 23:42:44 [multiproc_executor.py:790] Parent process exited, terminating worker queues
+(EngineCore pid=264927) INFO 07-30 23:42:44 [multiproc_executor.py:428] [shutdown] Executor: waiting for worker exit count=16
+(APIServer pid=264897) ERROR 07-30 23:42:44 [async_llm.py:704] AsyncLLM output_handler failed.
+(APIServer pid=264897) ERROR 07-30 23:42:44 [async_llm.py:704] Traceback (most recent call last):
+(APIServer pid=264897) ERROR 07-30 23:42:44 [async_llm.py:704]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/engine/async_llm.py", line 660, in output_handler
+(APIServer pid=264897) ERROR 07-30 23:42:44 [async_llm.py:704]     outputs = await engine_core.get_output_async()
+(APIServer pid=264897) ERROR 07-30 23:42:44 [async_llm.py:704]               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=264897) ERROR 07-30 23:42:44 [async_llm.py:704]   File "/usr/local/python3.11.10/lib/python3.11/site-packages/vllm/v1/engine/core_client.py", line 1046, in get_output_async
+(APIServer pid=264897) ERROR 07-30 23:42:44 [async_llm.py:704]     raise self._format_exception(outputs) from None
+(APIServer pid=264897) ERROR 07-30 23:42:44 [async_llm.py:704] vllm.v1.engine.exceptions.EngineDeadError: EngineCore encountered an issue. See stack trace (above) for the root cause.
+(APIServer pid=264897) INFO:     141.61.81.164:48154 - "POST /v1/completions HTTP/1.1" 500 Internal Server Error
+(APIServer pid=264897) INFO:     Shutting down
+(APIServer pid=264897) INFO:     Waiting for application shutdown.
+(APIServer pid=264897) INFO:     Application shutdown complete.
+(APIServer pid=264897) INFO:     Finished server process [264897]
+(APIServer pid=264897) INFO 07-30 23:42:44 [core_client.py:652] [shutdown] MPClient: start timeout=0s
+(APIServer pid=264897) INFO 07-30 23:42:44 [core_client.py:654] [shutdown] MPClient: stopping engine manager
+(APIServer pid=264897) WARNING 07-30 23:42:44 [utils.py:607] [shutdown] Process manager: force killing remaining processes count=1
+(APIServer pid=264897) INFO 07-30 23:42:44 [core_client.py:656] [shutdown] MPClient: engine manager stopped
+(APIServer pid=264897) INFO 07-30 23:42:44 [core_client.py:657] [shutdown] MPClient: cleaning up background resources
+(APIServer pid=264897) INFO 07-30 23:42:44 [core_client.py:659] [shutdown] MPClient: complete
+[root@node164 platform]# /usr/local/python3.11.10/lib/python3.11/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 16 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+/usr/local/python3.11.10/lib/python3.11/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 18 leaked shared_memory objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
