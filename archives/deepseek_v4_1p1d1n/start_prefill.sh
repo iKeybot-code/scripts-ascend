@@ -29,14 +29,14 @@ export PYTHONHASHSEED=0
 export VLLM_USE_V2_MODEL_RUNNER=1
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-vllm serve /mnt/weight/DeepSeek-V3.1-w4a8-mtp-QuaRot \
+vllm serve /mnt/share/weight/dsk-v3.1-w4a4_mlp-w8a8c8_attn-0618-full \
   --host 0.0.0.0 \
   --port "${2:-8000}" \
   --data-parallel-size 1 \
   --tensor-parallel-size 8 \
   --enable-expert-parallel \
   --seed 1024 \
-  --served-model-name deepseek_v3 \
+  --served-model-name dsv4 \
   --max-model-len 65536 \
   --max-num-batched-tokens 16384 \
   --max-num-seqs 8 \
@@ -53,35 +53,18 @@ vllm serve /mnt/weight/DeepSeek-V3.1-w4a8-mtp-QuaRot \
     "recompute_scheduler_enable": true
   }' \
   --kv-transfer-config '{
-    "kv_connector": "MultiConnector",
+    "kv_connector": "MooncakeConnectorV1",
     "kv_role": "kv_producer",
-    "kv_load_failure_policy": "recompute",
+    "kv_port": "36000",
     "kv_connector_extra_config": {
-      "connectors": [
-        {
-          "kv_connector": "MooncakeConnectorV1",
-          "kv_role": "kv_producer",
-          "kv_port": "36000",
-          "kv_connector_extra_config": {
-            "prefill": {
-              "dp_size": 1,
-              "tp_size": 8
-            },
-            "decode": {
-              "dp_size": 1,
-              "tp_size": 8
-            }
-          }
-        },
-        {
-          "kv_connector": "AscendStoreConnector",
-          "kv_role": "kv_producer",
-          "kv_connector_extra_config": {
-            "lookup_rpc_port": "0",
-            "backend": "mooncake"
-          }
-        }
-      ]
+      "prefill": {
+        "dp_size": 1,
+        "tp_size": 8
+      },
+      "decode": {
+        "dp_size": 1,
+        "tp_size": 8
+      }
     }
   }' \
   2>&1 | tee "${SCRIPT_DIR}/prefill.log"

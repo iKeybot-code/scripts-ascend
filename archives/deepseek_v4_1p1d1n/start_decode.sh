@@ -30,14 +30,14 @@ export PYTHONHASHSEED=0
 export VLLM_USE_V2_MODEL_RUNNER=1
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-vllm serve /mnt/weight/DeepSeek-V3.1-w4a8-mtp-QuaRot \
+vllm serve /mnt/share/weight/dsk-v3.1-w4a4_mlp-w8a8c8_attn-0618-full \
   --host 0.0.0.0 \
   --port "${2:-8001}" \
   --data-parallel-size 1 \
   --tensor-parallel-size 8 \
   --enable-expert-parallel \
   --seed 1024 \
-  --served-model-name deepseek_v3 \
+  --served-model-name dsv4 \
   --max-model-len 65536 \
   --max-num-batched-tokens 256 \
   --max-num-seqs 28 \
