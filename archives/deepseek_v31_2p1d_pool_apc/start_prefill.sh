@@ -24,7 +24,7 @@ export VLLM_TORCH_PROFILER_WITH_STACK=1
 export VLLM_USE_V1=1
 export ASCEND_RT_VISIBLE_DEVICES=$1
 export ASCEND_BUFFER_POOL=4:8
-export MOONCAKE_CONFIG_PATH="/mnt/a800_share/l00848175/workspace/tests/deepseek_v31_2p1d_mrv2/mooncake.json"
+export MOONCAKE_CONFIG_PATH="/mnt/a800_share/l00848175/scripts-ascend/example/template/mooncake.json"
 export HCCL_RDMA_TIMEOUT=17
 export ASCEND_CONNECT_TIMEOUT=10000
 export ASCEND_TRANSFER_TIMEOUT=10000
@@ -35,28 +35,28 @@ export VLLM_USE_V2_MODEL_RUNNER=1
 
 # vllm起服务配置
 vllm serve /mnt/a800_weight/DeepSeek-V3.1-Terminus-w4a8-mtp-QuaRot \
-	--host 0.0.0.0 \
-	--port $2 \
-	--data-parallel-size $3 \
-	--data-parallel-rank $4 \
-	--data-parallel-address $5 \
-	--data-parallel-rpc-port $6 \
-	--tensor-parallel-size $7 \
-	--enable-expert-parallel \
-	--seed 1024 \
-	--served-model-name deepseek_v3 \
-	--max-model-len 65536 \
-	--max-num-batched-tokens 16384 \
-	--max-num-seqs 8 \
-	--enforce-eager \
-	--trust-remote-code \
-	--gpu-memory-utilization 0.9 \
-	--quantization ascend \
-	--enable-prefix-caching \
-	--speculative-config '{"num_speculative_tokens": 1, "method": "mtp"}' \
-	--additional-config '{"recompute_scheduler_enable":true}' \
-	--kv-transfer-config \
-	'{
+  --host 0.0.0.0 \
+  --port $2 \
+  --data-parallel-size $3 \
+  --data-parallel-rank $4 \
+  --data-parallel-address $5 \
+  --data-parallel-rpc-port $6 \
+  --tensor-parallel-size $7 \
+  --enable-expert-parallel \
+  --seed 1024 \
+  --served-model-name deepseek_v3 \
+  --max-model-len 65536 \
+  --max-num-batched-tokens 16384 \
+  --max-num-seqs 8 \
+  --enforce-eager \
+  --trust-remote-code \
+  --gpu-memory-utilization 0.9 \
+  --quantization ascend \
+  --enable-prefix-caching \
+  --speculative-config '{"num_speculative_tokens": 1, "method": "mtp"}' \
+  --additional-config '{"recompute_scheduler_enable":true}' \
+  --kv-transfer-config \
+  '{
     "kv_connector": "MultiConnector",
     "kv_role": "kv_producer",
     "kv_connector_extra_config": {

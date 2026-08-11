@@ -48,10 +48,10 @@ vllm serve /mnt/a800_weight/DeepSeek-V3.1-Terminus-w4a8-mtp-QuaRot \
   --trust-remote-code \
   --gpu-memory-utilization 0.92 \
   --quantization ascend \
-  --no-enable-prefix-caching \
+  --enable-prefix-caching \
   --speculative-config '{"num_speculative_tokens": 1, "method": "mtp"}' \
   --compilation-config '{"cudagraph_mode": "FULL_DECODE_ONLY"}' \
-  --additional-config '{"recompute_scheduler_enable":true, "multistream_overlap_shared_expert": true, "finegrained_tp_config": {"lmhead_tensor_parallel_size":16}}' \
+  --additional-config '{"recompute_scheduler_enable":true, "multistream_overlap_shared_expert": true}' \
   --kv-transfer-config \
   '{
     "kv_connector": "MooncakeConnectorV1",
