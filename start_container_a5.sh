@@ -62,8 +62,8 @@ docker run \
   -v /usr/lib64:/usr/lib64 \
   -v /usr/local/bin/npu-smi:/usr/local/bin/npu-smi \
   -v /usr/local/sbin/npu-smi:/usr/local/sbin/npu-smi \
-  -v /home/:/home/ \
   -v /etc/hixlep:/etc/hixlep \
+  -v /home/:/home/ \
   -v /mnt:/mnt \
   -v /data:/data \
   -w $WORK_SPACE \
