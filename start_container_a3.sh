@@ -37,6 +37,8 @@ docker run \
   --name $NAME \
   --net=host \
   --shm-size=500g \
+  --privileged=true \
+  --security-opt seccomp=unconfined \
   --device /dev/davinci0 \
   --device /dev/davinci1 \
   --device /dev/davinci2 \

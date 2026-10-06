@@ -37,8 +37,8 @@ docker run \
   --runtime=runc \
   --name $NAME \
   --net=host \
-  --privileged=true \
   --shm-size=500g \
+  --privileged=true \
   --device /dev/davinci_manager \
   --device /dev/hisi_hdc \
   --device /dev/ummu \
